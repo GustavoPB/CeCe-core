@@ -37,6 +37,12 @@ project(CeCe
     LANGUAGES CXX
 )
 
+# C++11 standard
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_EXTENSIONS Off)
+set(CMAKE_CXX_STANDARD_REQUIRED On)
+set(CMAKE_POSITION_INDEPENDENT_CODE On)
+
 # ######################################################################### #
 
 # Options
@@ -72,6 +78,15 @@ if (CECE_TESTS_BUILD)
     message(STATUS "Build unit tests")
     enable_testing()
     include(GTest)
+endif ()
+
+if (CECE_PHYSICS_BUILTIN)
+    set(BOX2D_BUILD_EXAMPLES Off CACHE BOOL "" FORCE)
+    set(BOX2D_BUILD_SHARED Off CACHE BOOL "" FORCE)
+    set(BOX2D_BUILD_STATIC On CACHE BOOL "" FORCE)
+    set(BOX2D_INSTALL Off CACHE BOOL "" FORCE)
+    set(BOX2D_INSTALL_DOC Off CACHE BOOL "" FORCE)
+    add_subdirectory(Box2D/Box2D)
 endif ()
 
 # ######################################################################### #

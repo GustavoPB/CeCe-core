@@ -30,12 +30,6 @@ set(CECE_ENABLE_BOX2D_PHYSICS_DEBUG ${CECE_PHYSICS_BUILTIN_DEBUG})
 # Create config file
 configure_file(config.hpp.in config.hpp)
 
-# C++11 standard
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_EXTENSIONS Off)
-set(CMAKE_CXX_STANDARD_REQUIRED On)
-set(CMAKE_POSITION_INDEPENDENT_CODE On)
-
 # ######################################################################### #
 
 # Core files
@@ -118,12 +112,6 @@ if (CECE_RENDER_ENABLE)
 endif ()
 
 if (CECE_PHYSICS_BUILTIN)
-    set(BOX2D_BUILD_EXAMPLES Off CACHE BOOL "" FORCE)
-    set(BOX2D_BUILD_SHARED Off CACHE BOOL "" FORCE)
-    set(BOX2D_BUILD_STATIC On CACHE BOOL "" FORCE)
-    set(BOX2D_INSTALL Off CACHE BOOL "" FORCE)
-    set(BOX2D_INSTALL_DOC Off CACHE BOOL "" FORCE)
-    add_subdirectory(Box2D/Box2D)
     target_link_libraries(${PROJECT_NAME} Box2D)
 endif ()
 
