@@ -32,7 +32,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/")
 
 # ######################################################################### #
 
-project(CeCe
+project(cece
     VERSION 0.6.0
     LANGUAGES CXX
 )
