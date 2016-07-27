@@ -32,6 +32,21 @@ configure_file(config.hpp.in config.hpp)
 
 # ######################################################################### #
 
+##
+## Pretend directory to source files
+##
+function(dir_pretend OUT DIR)
+    set(FILES "")
+
+    foreach (F ${ARGN})
+        list(APPEND FILES "${DIR}${F}")
+    endforeach ()
+
+    set(${OUT} ${FILES} PARENT_SCOPE)
+endfunction ()
+
+# ######################################################################### #
+
 # Core files
 add_subdirectory(core)
 add_subdirectory(config)
@@ -52,29 +67,41 @@ add_subdirectory(simulator)
 
 # ######################################################################### #
 
+# Sources
+set(SRCS
+    ${SOURCES_CORE}
+    ${SOURCES_CONFIG}
+    ${SOURCES_LOADER}
+    ${SOURCES_INIT}
+    ${SOURCES_MODULE}
+    ${SOURCES_OBJECT}
+    ${SOURCES_PROGRAM}
+    ${SOURCES_PLUGIN}
+    ${SOURCES_SIMULATOR}
+)
+
 if (CECE_RENDER_ENABLE)
-    set(RENDER_SOURCES $<TARGET_OBJECTS:render>)
+    set(SRCS ${SRCS} ${SOURCES_RENDER})
 endif ()
 
 # Create library
-add_library(${PROJECT_NAME} SHARED
-    $<TARGET_OBJECTS:core>
-    $<TARGET_OBJECTS:config>
-    $<TARGET_OBJECTS:loader>
-    $<TARGET_OBJECTS:init>
-    $<TARGET_OBJECTS:module>
-    $<TARGET_OBJECTS:object>
-    $<TARGET_OBJECTS:program>
-    $<TARGET_OBJECTS:plugin>
-    $<TARGET_OBJECTS:simulator>
-    ${RENDER_SOURCES}
-)
+add_library(${PROJECT_NAME} SHARED ${SRCS})
 
 # ######################################################################### #
 
-# OSX framework
+# Properties
 set_target_properties(${PROJECT_NAME} PROPERTIES
     FRAMEWORK On
+    CXX_STANDARD 11
+    CXX_EXTENSIONS Off
+    CXX_STANDARD_REQUIRED On
+)
+
+# Include directories
+target_include_directories(${PROJECT_NAME}
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/..
+        ${CMAKE_CURRENT_BINARY_DIR}/..
 )
 
 # Generate export header (MSVC)
@@ -85,34 +112,27 @@ generate_export_header(${PROJECT_NAME}
 
 # ######################################################################### #
 
+# Boost libraries
 set(Boost_USE_STATIC_LIBS Off)
 find_package(Boost REQUIRED filesystem system)
-
-# Include directories
-target_include_directories(${PROJECT_NAME}
-    PUBLIC ${Boost_INCLUDE_DIRS}
-)
-# Link libraries
-target_link_libraries(${PROJECT_NAME}
-    ${Boost_LIBRARIES}
-)
+target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
+target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
 
 # Include OpenGL if rendering is enabled
 if (CECE_RENDER_ENABLE)
     # OpenGL library is required
     find_package(OpenGL REQUIRED)
-
-    # Include OpenGL path
-    target_include_directories(${PROJECT_NAME}
-        PUBLIC ${OPENGL_INCLUDE_DIR}
-    )
-    target_link_libraries(${PROJECT_NAME}
-        ${OPENGL_LIBRARIES}
-    )
+    target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
+    target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
 endif ()
 
 if (CECE_PHYSICS_BUILTIN)
-    target_link_libraries(${PROJECT_NAME} Box2D)
+    target_link_libraries(${PROJECT_NAME} Physics)
+endif ()
+
+# Enable time measurement
+if (CECE_PERFORMANCE_MEASUREMENT)
+    target_compile_definitions(${PROJECT_NAME} -DENABLE_MEASUREMENT)
 endif ()
 
 if (MINGW)

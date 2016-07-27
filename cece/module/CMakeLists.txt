@@ -23,7 +23,8 @@
 #                                                                           #
 # ######################################################################### #
 
-add_library(module OBJECT
+# Sources
+set(SRCS
     Module.hpp
     Module.cpp
     Factory.hpp
@@ -35,5 +36,11 @@ add_library(module OBJECT
     ExportModule.hpp
     ExportModule.cpp
 )
+
+# ######################################################################### #
+
+dir_pretend(SOURCES module/ ${SRCS})
+
+set(SOURCES_MODULE ${SOURCES} PARENT_SCOPE)
 
 # ######################################################################### #

@@ -23,7 +23,8 @@
 #                                                                           #
 # ######################################################################### #
 
-add_library(config OBJECT
+# Sources
+set(SRCS
     Implementation.hpp
     Implementation.cpp
     Configuration.hpp
@@ -31,5 +32,11 @@ add_library(config OBJECT
     MemoryImplementation.hpp
     MemoryImplementation.cpp
 )
+
+# ######################################################################### #
+
+dir_pretend(SOURCES config/ ${SRCS})
+
+set(SOURCES_CONFIG ${SOURCES} PARENT_SCOPE)
 
 # ######################################################################### #

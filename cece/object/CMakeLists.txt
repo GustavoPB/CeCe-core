@@ -23,7 +23,8 @@
 #                                                                           #
 # ######################################################################### #
 
-add_library(object OBJECT
+# Sources
+set(SRCS
     Object.hpp
     Object.cpp
     Type.hpp
@@ -36,5 +37,11 @@ add_library(object OBJECT
     Container.hpp
     Container.cpp
 )
+
+# ######################################################################### #
+
+dir_pretend(SOURCES object/ ${SRCS})
+
+set(SOURCES_OBJECT ${SOURCES} PARENT_SCOPE)
 
 # ######################################################################### #

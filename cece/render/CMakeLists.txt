@@ -29,14 +29,8 @@ endif ()
 
 # ######################################################################### #
 
-if (CECE_PHYSICS_BUILTIN_DEBUG)
-    set(PHYSICS_SOURCES
-        PhysicsDebugger.hpp
-        PhysicsDebugger.cpp
-    )
-endif()
-
-add_library(render OBJECT
+# Sources
+set(SRCS
     datatype.hpp
     Color.hpp
     Color.cpp
@@ -80,7 +74,19 @@ add_library(render OBJECT
     State.hpp
     Image.hpp
     Image.cpp
-    ${PHYSICS_SOURCES}
 )
+
+if (CECE_PHYSICS_BUILTIN_DEBUG)
+    set(SRCS ${SRCS}
+        PhysicsDebugger.hpp
+        PhysicsDebugger.cpp
+    )
+endif ()
+
+# ######################################################################### #
+
+dir_pretend(SOURCES render/ ${SRCS})
+
+set(SOURCES_RENDER ${SOURCES} PARENT_SCOPE)
 
 # ######################################################################### #

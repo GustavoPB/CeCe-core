@@ -23,7 +23,8 @@
 #                                                                           #
 # ######################################################################### #
 
-add_library(program OBJECT
+# Sources
+set(SRCS
     Program.hpp
     Container.hpp
     Container.cpp
@@ -34,5 +35,11 @@ add_library(program OBJECT
     FactoryManager.hpp
     FactoryManager.cpp
 )
+
+# ######################################################################### #
+
+dir_pretend(SOURCES program/ ${SRCS})
+
+set(SOURCES_PROGRAM ${SOURCES} PARENT_SCOPE)
 
 # ######################################################################### #

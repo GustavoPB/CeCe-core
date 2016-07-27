@@ -23,12 +23,7 @@
 #                                                                           #
 # ######################################################################### #
 
-cmake_minimum_required(VERSION 3.2)
-
-# ######################################################################### #
-
-# Add path to additional modules
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/CMake/")
+cmake_minimum_required(VERSION 3.0)
 
 # ######################################################################### #
 
@@ -36,12 +31,6 @@ project(cece
     VERSION 0.6.0
     LANGUAGES CXX
 )
-
-# C++11 standard
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_EXTENSIONS Off)
-set(CMAKE_CXX_STANDARD_REQUIRED On)
-set(CMAKE_POSITION_INDEPENDENT_CODE On)
 
 # ######################################################################### #
 
@@ -67,17 +56,13 @@ endif ()
 
 # ######################################################################### #
 
-# Enable time measurement
-if (CECE_PERFORMANCE_MEASUREMENT)
-    message(STATUS "Time measurement enabled")
-    add_definitions(-DENABLE_MEASUREMENT=1)
-endif ()
-
 # Build unit tests
 if (CECE_TESTS_BUILD)
     message(STATUS "Build unit tests")
+    set(BUILD_GMOCK Off CACHE BOOL "" FORCE)
+    set(BUILD_GTEST On CACHE BOOL "" FORCE)
+    add_subdirectory(googletest)
     enable_testing()
-    include(GTest)
 endif ()
 
 if (CECE_PHYSICS_BUILTIN)
@@ -87,15 +72,10 @@ if (CECE_PHYSICS_BUILTIN)
     set(BOX2D_INSTALL Off CACHE BOOL "" FORCE)
     set(BOX2D_INSTALL_DOC Off CACHE BOOL "" FORCE)
     add_subdirectory(Box2D/Box2D)
+    # It will be linked in to shared library
+    set_target_properties(Box2D PROPERTIES POSITION_INDEPENDENT_CODE On)
+    add_library(Physics ALIAS Box2D)
 endif ()
-
-# ######################################################################### #
-
-# Include directories
-include_directories(
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_CURRENT_BINARY_DIR}
-)
 
 # ######################################################################### #
 

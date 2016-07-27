@@ -23,7 +23,8 @@
 #                                                                           #
 # ######################################################################### #
 
-add_library(simulator OBJECT
+# Sources
+set(SRCS
     Simulation.hpp
     Simulation.cpp
     Simulator.hpp
@@ -35,8 +36,20 @@ add_library(simulator OBJECT
     VisualizationLayer.hpp
     DefaultSimulation.hpp
     DefaultSimulation.cpp
-    ConverterBox2D.hpp
-    ConverterBox2D.cpp
 )
+
+if (CECE_PHYSICS_BUILTIN)
+    # Sources
+    set(SRCS ${SRCS}
+        ConverterBox2D.hpp
+        ConverterBox2D.cpp
+    )
+endif ()
+
+# ######################################################################### #
+
+dir_pretend(SOURCES simulator/ ${SRCS})
+
+set(SOURCES_SIMULATOR ${SOURCES} PARENT_SCOPE)
 
 # ######################################################################### #

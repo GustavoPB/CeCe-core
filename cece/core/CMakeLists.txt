@@ -23,7 +23,7 @@
 #                                                                           #
 # ######################################################################### #
 
-add_library(core OBJECT
+set(SRCS
     Macro.hpp
     constants.hpp
     fastexp.hpp
@@ -103,18 +103,28 @@ add_library(core OBJECT
     CliColor.cpp
 )
 
-#    test/AlignedAllocatorTest.cpp
-#    test/DynamicArrayTest.cpp
-#    test/IteratorRangeTest.cpp
-#    test/VectorRangeTest.cpp
-#    test/UnitsTest.cpp
-#    test/StringViewTest.cpp
-#    test/VectorTest.cpp
-#    test/VectorUnitsTest.cpp
-#    test/ExpressionParserTest.cpp
-#    test/TokenizerTest.cpp
-#    test/ParametersTest.cpp
-#    test/PtrContainerTest.cpp
-#    test/ViewPtrTest.cpp
+set(SRCS_TEST
+    AlignedAllocatorTest.cpp
+    DynamicArrayTest.cpp
+    IteratorRangeTest.cpp
+    VectorRangeTest.cpp
+    UnitsTest.cpp
+    StringViewTest.cpp
+    VectorTest.cpp
+    VectorUnitsTest.cpp
+    ExpressionParserTest.cpp
+    TokenizerTest.cpp
+    ParametersTest.cpp
+    PtrContainerTest.cpp
+    ViewPtrTest.cpp
+)
+
+# ######################################################################### #
+
+dir_pretend(SOURCES core/ ${SRCS})
+dir_pretend(SOURCES_TEST core/test ${SRCS_TEST})
+
+set(SOURCES_CORE ${SOURCES} PARENT_SCOPE)
+set(SOURCES_CORE_TEST ${SOURCES_TEST} PARENT_SCOPE)
 
 # ######################################################################### #

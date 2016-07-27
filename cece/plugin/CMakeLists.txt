@@ -23,7 +23,8 @@
 #                                                                           #
 # ######################################################################### #
 
-add_library(plugin OBJECT
+# Sources
+set(SRCS
     Config.hpp
     definition.hpp
     Library.hpp
@@ -38,5 +39,11 @@ add_library(plugin OBJECT
     Context.hpp
     Context.cpp
 )
+
+# ######################################################################### #
+
+dir_pretend(SOURCES plugin/ ${SRCS})
+
+set(SOURCES_PLUGIN ${SOURCES} PARENT_SCOPE)
 
 # ######################################################################### #

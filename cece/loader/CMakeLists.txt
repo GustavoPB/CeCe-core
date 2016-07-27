@@ -23,7 +23,8 @@
 #                                                                           #
 # ######################################################################### #
 
-add_library(loader OBJECT
+# Sources
+set(SRCS
     Loader.hpp
     Loader.cpp
     Factory.hpp
@@ -31,5 +32,11 @@ add_library(loader OBJECT
     FactoryManager.hpp
     FactoryManager.cpp
 )
+
+# ######################################################################### #
+
+dir_pretend(SOURCES loader/ ${SRCS})
+
+set(SOURCES_LOADER ${SOURCES} PARENT_SCOPE)
 
 # ######################################################################### #
