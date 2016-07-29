@@ -122,7 +122,7 @@ set(SRCS_TEST
 # ######################################################################### #
 
 dir_pretend(SOURCES core/ ${SRCS})
-dir_pretend(SOURCES_TEST core/test ${SRCS_TEST})
+dir_pretend(SOURCES_TEST core/test/ ${SRCS_TEST})
 
 set(SOURCES_CORE ${SOURCES} PARENT_SCOPE)
 set(SOURCES_CORE_TEST ${SOURCES_TEST} PARENT_SCOPE)

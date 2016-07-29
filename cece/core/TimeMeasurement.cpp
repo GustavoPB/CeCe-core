@@ -40,6 +40,17 @@ static OutStream* g_output = &std::cout;
 
 /* ************************************************************************ */
 
+bool isMeasureTimeEnabled() noexcept
+{
+#ifndef CECE_ENABLE_MEASUREMENT
+    return false;
+#else
+    return true;
+#endif
+}
+
+/* ************************************************************************ */
+
 OutStream* getMeasureTimeOutput() noexcept
 {
     return g_output;

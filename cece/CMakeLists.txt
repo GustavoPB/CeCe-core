@@ -113,7 +113,12 @@ generate_export_header(${PROJECT_NAME}
 # ######################################################################### #
 
 # Boost libraries
-set(Boost_USE_STATIC_LIBS Off)
+if (UNIX AND NOT APPLE)
+    set(Boost_USE_STATIC_LIBS Off)
+else ()
+    set(Boost_USE_STATIC_LIBS On)
+endif ()
+
 find_package(Boost REQUIRED filesystem system)
 target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
@@ -132,13 +137,39 @@ endif ()
 
 # Enable time measurement
 if (CECE_PERFORMANCE_MEASUREMENT)
-    target_compile_definitions(${PROJECT_NAME} -DENABLE_MEASUREMENT)
+    target_compile_definitions(${PROJECT_NAME} -DCECE_ENABLE_MEASUREMENT)
 endif ()
 
 if (MINGW)
     target_link_libraries(${PROJECT_NAME} Ws2_32)
 elseif (UNIX AND NOT APPLE)
     target_link_libraries(${PROJECT_NAME} dl)
+endif ()
+
+# ######################################################################### #
+
+if (CECE_TESTS_BUILD)
+    add_executable(${PROJECT_NAME}_test
+        ${SOURCES_CORE_TEST}
+    )
+
+    # Properties
+    set_target_properties(${PROJECT_NAME}_test PROPERTIES
+        CXX_STANDARD 11
+        CXX_EXTENSIONS Off
+        CXX_STANDARD_REQUIRED On
+    )
+
+    target_include_directories(${PROJECT_NAME}_test
+        PRIVATE ../googletest/include
+    )
+
+    target_link_libraries(${PROJECT_NAME}_test
+        ${PROJECT_NAME}
+        gtest_main
+    )
+
+    add_test(${PROJECT_NAME} ${PROJECT_NAME}_test)
 endif ()
 
 # ######################################################################### #

@@ -49,6 +49,15 @@ using Clock = std::chrono::high_resolution_clock;
 /* ************************************************************************ */
 
 /**
+ * @brief Returns if measurement is enabled.
+ *
+ * @return
+ */
+bool isMeasureTimeEnabled() noexcept;
+
+/* ************************************************************************ */
+
+/**
  * @brief Returns current output stream to measurement output.
  *
  * @return
@@ -141,8 +150,7 @@ private:
 
 /* ************************************************************************ */
 
-#if !ENABLE_MEASUREMENT
-
+#ifndef CECE_ENABLE_MEASUREMENT
 /**
  * @brief Dummy struct for time measurement that doesn't invoke unused variable
  * warnings.
@@ -152,9 +160,11 @@ struct TimeMeasurementDummy
     TimeMeasurementDummy() noexcept {}
     ~TimeMeasurementDummy() {}
 };
+#endif
 
 /* ************************************************************************ */
 
+#ifndef CECE_ENABLE_MEASUREMENT
 /**
  * @brief Dummy function for time measurement.
  *
@@ -171,7 +181,7 @@ inline TimeMeasurementDummy measure_time(Args&&... args) noexcept
 
 /* ************************************************************************ */
 
-#if ENABLE_MEASUREMENT
+#ifdef CECE_ENABLE_MEASUREMENT
 /**
  * @brief Measure time for current statement block.
  *
@@ -189,7 +199,7 @@ inline TimeMeasurementBase<Fn> measure_time(String name, Fn fn) noexcept
 
 /* ************************************************************************ */
 
-#if ENABLE_MEASUREMENT
+#ifdef CECE_ENABLE_MEASUREMENT
 /**
  * @brief Measure time for current statement block.
  *
