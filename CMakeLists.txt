@@ -89,6 +89,7 @@ if (CECE_PHYSICS_BUILTIN)
     add_subdirectory(Box2D/Box2D)
     # It will be linked in to the shared library
     set_target_properties(Box2D PROPERTIES POSITION_INDEPENDENT_CODE On)
+    target_include_directories(Box2D INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D)
     add_library(Physics ALIAS Box2D)
 endif ()
 
