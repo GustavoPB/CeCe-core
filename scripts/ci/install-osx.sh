@@ -25,12 +25,7 @@
 #                                                                           #
 # ######################################################################### #
 
-# Print versions of installed apps
-brew list --versions
-
 # Install dependencies
-brew install glfw3
-brew install box2d
-brew outdated libpng || brew upgrade libpng
+brew outdated boost || brew upgrade boost
 
 # ######################################################################### #

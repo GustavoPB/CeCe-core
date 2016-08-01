@@ -58,6 +58,12 @@ endif ()
 
 # Build unit tests
 if (CECE_TESTS_BUILD)
+    # Init google test submodule
+    if (NOT EXISTS "googletest/CMakeLists.txt")
+        find_package(Git REQUIRED)
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive googletest)
+    endif()
+
     message(STATUS "Build unit tests")
     set(BUILD_GMOCK Off CACHE BOOL "" FORCE)
     set(BUILD_GTEST On CACHE BOOL "" FORCE)
@@ -67,6 +73,12 @@ if (CECE_TESTS_BUILD)
 endif ()
 
 if (CECE_PHYSICS_BUILTIN)
+    # Init google test submodule
+    if (NOT EXISTS "Box2D/Box2D/CMakeLists.txt")
+        find_package(Git REQUIRED)
+        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive Box2D)
+    endif()
+
     set(BOX2D_BUILD_EXAMPLES Off CACHE BOOL "" FORCE)
     set(BOX2D_BUILD_SHARED Off CACHE BOOL "" FORCE)
     set(BOX2D_BUILD_STATIC On CACHE BOOL "" FORCE)
@@ -75,7 +87,7 @@ if (CECE_PHYSICS_BUILTIN)
     mark_as_advanced(FORCE BOX2D_BUILD_EXAMPLES BOX2D_BUILD_SHARED BOX2D_BUILD_STATIC BOX2D_INSTALL BOX2D_INSTALL_DOC)
 
     add_subdirectory(Box2D/Box2D)
-    # It will be linked in to shared library
+    # It will be linked in to the shared library
     set_target_properties(Box2D PROPERTIES POSITION_INDEPENDENT_CODE On)
     add_library(Physics ALIAS Box2D)
 endif ()

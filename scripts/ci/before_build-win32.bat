@@ -32,11 +32,7 @@ SET ARGS=^
     -DDEV_PHYSICS_BUILTIN_DEBUG=On ^
     -DDEV_PLUGIN_streamlines_RENDER=On ^
     -DBOOST_ROOT="%BOOST_ROOT%" ^
-    -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ^
-    -DPNG_PNG_INCLUDE_DIR="C:\Program Files (x86)\libpng\include" ^
-    -DZLIB_LIBRARY="C:\Program Files (x86)\zlib\lib\zlibstatic.lib" ^
-    -DPNG_LIBRARY_RELEASE="C:\Program Files (x86)\libpng\lib\libpng16_static.lib" ^
-    -DBOX2D_LIBRARY_PATH="C:/Program Files (x86)/Box2D/bin/Box2D.dll"
+    -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%"
 
 md build
 pushd build
