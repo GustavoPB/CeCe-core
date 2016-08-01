@@ -43,29 +43,29 @@ TEST(VectorTest, zero)
 {
     const Vector<float> vec{Zero};
 
-    EXPECT_FLOAT_EQ(0, vec.getX());
-    EXPECT_FLOAT_EQ(0, vec.getY());
+    EXPECT_FLOAT_EQ(0.f, vec.getX());
+    EXPECT_FLOAT_EQ(0.f, vec.getY());
 }
 
 /* ************************************************************************ */
 
 TEST(VectorTest, accessors)
 {
-    const Vector<float> vec{2, 3};
+    const Vector<float> vec{2.f, 3.f};
 
-    EXPECT_FLOAT_EQ(2.0, vec.getX());
-    EXPECT_FLOAT_EQ(3.0, vec.getY());
+    EXPECT_FLOAT_EQ(2.f, vec.getX());
+    EXPECT_FLOAT_EQ(3.f, vec.getY());
 }
 
 /* ************************************************************************ */
 
 TEST(VectorTest, comparisonOperators)
 {
-    const Vector<float> v1{10, 50};
-    const Vector<float> v2{60, 30};
-    const Vector<float> v3{10, 50};
-    const Vector<float> v4{10, 80};
-    const Vector<float> v5{10, 10};
+    const Vector<float> v1{10.f, 50.f};
+    const Vector<float> v2{60.f, 30.f};
+    const Vector<float> v3{10.f, 50.f};
+    const Vector<float> v4{10.f, 80.f};
+    const Vector<float> v5{10.f, 10.f};
 
     // Same vectors
     EXPECT_TRUE(v1 == v1);
@@ -93,87 +93,87 @@ TEST(VectorTest, comparisonOperators)
 
 TEST(VectorTest, addition)
 {
-    const Vector<float> v1{6.2, 3.3};
-    const Vector<float> v2{1.4, 0.9};
+    const Vector<float> v1{6.2f, 3.3f};
+    const Vector<float> v2{1.4f, 0.9f};
 
     const auto vRes0 = v1 + v2;
 
-    EXPECT_FLOAT_EQ(7.6, vRes0.getX());
-    EXPECT_FLOAT_EQ(4.2, vRes0.getY());
+    EXPECT_FLOAT_EQ(7.6f, vRes0.getX());
+    EXPECT_FLOAT_EQ(4.2f, vRes0.getY());
 
     const auto vRes1 = v2 + v1;
 
-    EXPECT_FLOAT_EQ(7.6, vRes1.getX());
-    EXPECT_FLOAT_EQ(4.2, vRes1.getY());
+    EXPECT_FLOAT_EQ(7.6f, vRes1.getX());
+    EXPECT_FLOAT_EQ(4.2f, vRes1.getY());
 }
 
 /* ************************************************************************ */
 
 TEST(VectorTest, substraction)
 {
-    const Vector<float> v1{6.2, 3.3};
-    const Vector<float> v2{1.4, 0.9};
+    const Vector<float> v1{6.2f, 3.3f};
+    const Vector<float> v2{1.4f, 0.9f};
 
     const auto vRes0 = v1 - v2;
 
-    EXPECT_FLOAT_EQ(4.8, vRes0.getX());
-    EXPECT_FLOAT_EQ(2.4, vRes0.getY());
+    EXPECT_FLOAT_EQ(4.8f, vRes0.getX());
+    EXPECT_FLOAT_EQ(2.4f, vRes0.getY());
 
     const auto vRes1 = v2 - v1;
 
-    EXPECT_FLOAT_EQ(-4.8, vRes1.getX());
-    EXPECT_FLOAT_EQ(-2.4, vRes1.getY());
+    EXPECT_FLOAT_EQ(-4.8f, vRes1.getX());
+    EXPECT_FLOAT_EQ(-2.4f, vRes1.getY());
 }
 
 /* ************************************************************************ */
 
 TEST(VectorTest, multiplication)
 {
-    const Vector<float> v1{6.2, 3.3};
-    const Vector<float> v2{1.4, 0.9};
+    const Vector<float> v1{6.2f, 3.3f};
+    const Vector<float> v2{1.4f, 0.9f};
 
     const auto vRes0 = v1 * v2;
 
-    EXPECT_FLOAT_EQ( 8.68, vRes0.getX());
-    EXPECT_FLOAT_EQ( 2.97, vRes0.getY());
+    EXPECT_FLOAT_EQ( 8.68f, vRes0.getX());
+    EXPECT_FLOAT_EQ( 2.97f, vRes0.getY());
 
-    const auto vRes1 = v1 * 2.2;
+    const auto vRes1 = v1 * 2.2f;
 
-    EXPECT_FLOAT_EQ(13.64, vRes1.getX());
-    EXPECT_FLOAT_EQ( 7.26, vRes1.getY());
+    EXPECT_FLOAT_EQ(13.64f, vRes1.getX());
+    EXPECT_FLOAT_EQ( 7.26f, vRes1.getY());
 
-    const auto vRes2 = 5.1 * v2;
+    const auto vRes2 = 5.1f * v2;
 
-    EXPECT_FLOAT_EQ( 7.14, vRes2.getX());
-    EXPECT_FLOAT_EQ( 4.59, vRes2.getY());
+    EXPECT_FLOAT_EQ( 7.14f, vRes2.getX());
+    EXPECT_FLOAT_EQ( 4.59f, vRes2.getY());
 }
 
 /* ************************************************************************ */
 
 TEST(VectorTest, division)
 {
-    const Vector<float> v1{6.2, 3.3};
-    const Vector<float> v2{1.4, 0.9};
+    const Vector<float> v1{6.2f, 3.3f};
+    const Vector<float> v2{1.4f, 0.9f};
 
     const auto vRes0 = v1 / v2;
 
-    EXPECT_FLOAT_EQ(4.428571429, vRes0.getX());
-    EXPECT_FLOAT_EQ(3.666666667, vRes0.getY());
+    EXPECT_FLOAT_EQ(4.428571429f, vRes0.getX());
+    EXPECT_FLOAT_EQ(3.666666667f, vRes0.getY());
 }
 
 /* ************************************************************************ */
 
 TEST(VectorTest, dot)
 {
-    const Vector<float> v1{ 0,  5};
-    const Vector<float> v2{10,  0};
-    const Vector<float> v3{ 5,  5};
-    const Vector<float> v4{ 1,  1};
-    const Vector<float> v5{ 2, -2};
+    const Vector<float> v1{ 0.f,  5.f};
+    const Vector<float> v2{10.f,  0.f};
+    const Vector<float> v3{ 5.f,  5.f};
+    const Vector<float> v4{ 1.f,  1.f};
+    const Vector<float> v5{ 2.f, -2.f};
 
-    EXPECT_FLOAT_EQ( 0, v1.dot(v2));
-    EXPECT_FLOAT_EQ(50, v2.dot(v3));
-    EXPECT_FLOAT_EQ( 0, v4.dot(v5));
+    EXPECT_FLOAT_EQ( 0.f, v1.dot(v2));
+    EXPECT_FLOAT_EQ(50.f, v2.dot(v3));
+    EXPECT_FLOAT_EQ( 0.f, v4.dot(v5));
 }
 
 /* ************************************************************************ */
@@ -181,14 +181,14 @@ TEST(VectorTest, dot)
 TEST(VectorTest, lengthSquared)
 {
     const Vector<float> v1{Zero};
-    const Vector<float> v2{1, 1};
-    const Vector<float> v3{2, 4};
-    const Vector<float> v4{3, 8};
+    const Vector<float> v2{1.f, 1.f};
+    const Vector<float> v3{2.f, 4.f};
+    const Vector<float> v4{3.f, 8.f};
 
-    EXPECT_FLOAT_EQ(0, v1.getLengthSquared());
-    EXPECT_FLOAT_EQ(2, v2.getLengthSquared());
-    EXPECT_FLOAT_EQ(20, v3.getLengthSquared());
-    EXPECT_FLOAT_EQ(73, v4.getLengthSquared());
+    EXPECT_FLOAT_EQ(0.f, v1.getLengthSquared());
+    EXPECT_FLOAT_EQ(2.f, v2.getLengthSquared());
+    EXPECT_FLOAT_EQ(20.f, v3.getLengthSquared());
+    EXPECT_FLOAT_EQ(73.f, v4.getLengthSquared());
 }
 
 /* ************************************************************************ */
@@ -196,14 +196,14 @@ TEST(VectorTest, lengthSquared)
 TEST(VectorTest, length)
 {
     const Vector<float> v1{Zero};
-    const Vector<float> v2{1, 1};
-    const Vector<float> v3{2, 4};
-    const Vector<float> v4{3, 8};
+    const Vector<float> v2{1.f, 1.f};
+    const Vector<float> v3{2.f, 4.f};
+    const Vector<float> v4{3.f, 8.f};
 
-    EXPECT_FLOAT_EQ(0, v1.getLength());
-    EXPECT_FLOAT_EQ(1.414213562, v2.getLength());
-    EXPECT_FLOAT_EQ(4.472135955, v3.getLength());
-    EXPECT_FLOAT_EQ(8.544003745, v4.getLength());
+    EXPECT_FLOAT_EQ(0.f, v1.getLength());
+    EXPECT_FLOAT_EQ(1.414213562f, v2.getLength());
+    EXPECT_FLOAT_EQ(4.472135955f, v3.getLength());
+    EXPECT_FLOAT_EQ(8.544003745f, v4.getLength());
 }
 
 /* ************************************************************************ */
@@ -216,8 +216,8 @@ TEST(VectorTest, istream)
         Vector<int> vec;
         is >> vec;
 
-        EXPECT_EQ(10, vec.getX());
-        EXPECT_EQ(20, vec.getY());
+        EXPECT_EQ(10.f, vec.getX());
+        EXPECT_EQ(20.f, vec.getY());
     }
 
     {
@@ -226,8 +226,8 @@ TEST(VectorTest, istream)
         Vector<float> vec;
         is >> vec;
 
-        EXPECT_FLOAT_EQ(0.3, vec.getX());
-        EXPECT_FLOAT_EQ(1.1, vec.getY());
+        EXPECT_FLOAT_EQ(0.3f, vec.getX());
+        EXPECT_FLOAT_EQ(1.1f, vec.getY());
     }
 
     {
@@ -236,8 +236,8 @@ TEST(VectorTest, istream)
         Vector<std::complex<float>> vec;
         is >> vec;
 
-        EXPECT_EQ(std::complex<float>(10, 15), vec.getX());
-        EXPECT_EQ(std::complex<float>(90), vec.getY());
+        EXPECT_EQ(std::complex<float>(10.f, 15.f), vec.getX());
+        EXPECT_EQ(std::complex<float>(90.f), vec.getY());
     }
 
     {
@@ -246,8 +246,8 @@ TEST(VectorTest, istream)
         Vector<int> vec;
         is >> vec;
 
-        EXPECT_EQ(10, vec.getX());
-        EXPECT_EQ(10, vec.getY());
+        EXPECT_EQ(10.f, vec.getX());
+        EXPECT_EQ(10.f, vec.getY());
     }
 
     {
@@ -256,8 +256,8 @@ TEST(VectorTest, istream)
         Vector<float> vec;
         is >> vec;
 
-        EXPECT_FLOAT_EQ(0.5, vec.getX());
-        EXPECT_FLOAT_EQ(0.5, vec.getY());
+        EXPECT_FLOAT_EQ(0.5f, vec.getX());
+        EXPECT_FLOAT_EQ(0.5f, vec.getY());
     }
 
 }
