@@ -26,6 +26,7 @@
 # ######################################################################### #
 
 # Install dependencies
+brew outdated cmake || brew upgrade cmake
 brew outdated boost || brew upgrade boost
 
 # ######################################################################### #
