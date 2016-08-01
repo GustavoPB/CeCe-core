@@ -93,7 +93,7 @@ InStream& operator>>(InStream& is, Unit<List<Nominators...>, List<Denominators..
     using SymbolType = Symbol<Type>;
 
     // Type symbol
-#if _LIBCPP_VERSION
+#if _LIBCPP_VERSION || _MSC_VER
     // MACOSX use old stdlib that doesnt support constexpr std::array.
     static const auto typeSymbolNom   = SymbolType::nominators::get();
     static const auto typeSymbolDenom = SymbolType::denominators::get();
