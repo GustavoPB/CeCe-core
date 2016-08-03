@@ -95,6 +95,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 11
     CXX_EXTENSIONS Off
     CXX_STANDARD_REQUIRED On
+    WINDOWS_EXPORT_ALL_SYMBOLS On
 )
 
 # Include directories
