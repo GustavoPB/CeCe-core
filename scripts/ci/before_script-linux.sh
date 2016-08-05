@@ -33,7 +33,7 @@ ARGS="\
 # Disable rendering
 if [ "${ENABLE_RENDER}" = false ]; then
     ARGS="$ARGS \
-        -DCECE_ENABLE_RENDER=Off"
+        -DCECE_RENDER_ENABLE=Off"
 fi
 
 # Use gcc 4.9

@@ -432,9 +432,12 @@ void DefaultSimulation::initialize(AtomicBool& flag)
     m_initializers.init(*this);
 
     // Update states
+#ifdef CECE_ENABLE_RENDER
     m_modules.drawStoreState(m_visualization);
     m_objects.drawStoreState(m_visualization);
+#endif
 
+#ifdef CECE_ENABLE_RENDER
     {
 #ifdef CECE_THREAD_SAFE
         MutexGuard _(m_mutex);
@@ -443,6 +446,7 @@ void DefaultSimulation::initialize(AtomicBool& flag)
         m_modules.drawSwapState();
         m_objects.drawSwapState();
     }
+#endif
 
     // Mark simulation initialized
     m_initialized = true;
@@ -482,9 +486,12 @@ bool DefaultSimulation::update()
     detectDeserters();
 
     // Update states
+#ifdef CECE_ENABLE_RENDER
     m_modules.drawStoreState(m_visualization);
     m_objects.drawStoreState(m_visualization);
+#endif
 
+#ifdef CECE_ENABLE_RENDER
     {
 #ifdef CECE_THREAD_SAFE
         MutexGuard _(m_mutex);
@@ -493,6 +500,7 @@ bool DefaultSimulation::update()
         m_modules.drawSwapState();
         m_objects.drawSwapState();
     }
+#endif
 
     {
 #ifdef CECE_THREAD_SAFE
