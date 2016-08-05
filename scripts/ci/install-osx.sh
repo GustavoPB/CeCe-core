@@ -26,8 +26,8 @@
 # ######################################################################### #
 
 # Install dependencies
-brew outdated cmake || brew upgrade cmake
-brew outdated boost || brew upgrade boost
-brew ccache cmake   || brew upgrade ccache
+brew outdated cmake  || brew upgrade cmake
+brew outdated boost  || brew upgrade boost
+brew outdated ccache || brew upgrade ccache
 
 # ######################################################################### #
