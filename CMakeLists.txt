@@ -75,6 +75,12 @@ if (CECE_TESTS_BUILD)
     add_subdirectory(googletest)
     target_include_directories(gtest INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/include)
     enable_testing()
+
+    find_program(CCACHE_FOUND ccache)
+    if (CCACHE_FOUND)
+        set_property(DIRECTORY googletest PROPERTY RULE_LAUNCH_COMPILE ccache)
+        set_property(DIRECTORY googletest PROPERTY RULE_LAUNCH_LINK ccache)
+    endif()
 endif ()
 
 if (CECE_PHYSICS_BUILTIN)
@@ -99,6 +105,12 @@ if (CECE_PHYSICS_BUILTIN)
     set_target_properties(Box2D PROPERTIES POSITION_INDEPENDENT_CODE On)
     target_include_directories(Box2D INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D)
     add_library(Physics ALIAS Box2D)
+
+    find_program(CCACHE_FOUND ccache)
+    if (CCACHE_FOUND)
+        set_property(DIRECTORY Box2D/Box2D PROPERTY RULE_LAUNCH_COMPILE ccache)
+        set_property(DIRECTORY Box2D/Box2D PROPERTY RULE_LAUNCH_LINK ccache)
+    endif()
 endif ()
 
 # ######################################################################### #
