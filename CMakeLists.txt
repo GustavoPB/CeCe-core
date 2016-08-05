@@ -73,6 +73,7 @@ if (CECE_TESTS_BUILD)
     set(gtest_force_shared_crt On CACHE BOOL "" FORCE)
     mark_as_advanced(BUILD_GMOCK BUILD_GTEST gtest_build_samples gtest_build_tests gtest_disable_pthreads gtest_force_shared_crt)
     add_subdirectory(googletest)
+    target_include_directories(gtest INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/include)
     enable_testing()
 endif ()
 

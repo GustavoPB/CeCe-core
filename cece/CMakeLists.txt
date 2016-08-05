@@ -161,10 +161,6 @@ if (CECE_TESTS_BUILD)
         CXX_STANDARD_REQUIRED On
     )
 
-    target_include_directories(${PROJECT_NAME}_test
-        PRIVATE ../googletest/include
-    )
-
     target_link_libraries(${PROJECT_NAME}_test
         ${PROJECT_NAME}
         gtest_main
