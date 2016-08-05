@@ -59,9 +59,12 @@ endif ()
 # Build unit tests
 if (CECE_TESTS_BUILD)
     # Init google test submodule
-    if (NOT EXISTS "googletest/CMakeLists.txt")
+    if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googletest/CMakeLists.txt")
         find_package(Git REQUIRED)
-        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive ${CMAKE_CURRENT_SOURCE_DIR}/googletest)
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive googletest
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        )
     endif()
 
     message(STATUS "Build unit tests")
@@ -75,9 +78,12 @@ endif ()
 
 if (CECE_PHYSICS_BUILTIN)
     # Init google test submodule
-    if (NOT EXISTS "Box2D/Box2D/CMakeLists.txt")
+    if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D/CMakeLists.txt")
         find_package(Git REQUIRED)
-        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive ${CMAKE_CURRENT_SOURCE_DIR}/Box2D)
+        execute_process(
+            COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive Box2D
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        )
     endif()
 
     set(BOX2D_BUILD_EXAMPLES Off CACHE BOOL "" FORCE)
