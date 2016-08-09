@@ -114,6 +114,7 @@ set(SRCS_TEST
     ParametersTest.cpp
     PtrContainerTest.cpp
     ViewPtrTest.cpp
+    FilePathTest.cpp
 )
 
 # ######################################################################### #
