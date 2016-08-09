@@ -94,19 +94,6 @@ public:
      *
      * @param source
      */
-    template<typename Source>
-    FilePath(Source source)
-        : m_path(std::begin(source), std::end(source))
-    {
-        // Nothing to do
-    }
-
-
-    /**
-     * @brief Constructor.
-     *
-     * @param source
-     */
     FilePath(const char* source)
         : m_path(source, std::strlen(source))
     {
