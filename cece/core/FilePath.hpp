@@ -281,6 +281,14 @@ public:
 
 
     /**
+     * @brief Returns path stem.
+     *
+     * @return
+     */
+    FilePath getStem() const noexcept;
+
+
+    /**
      * @brief Convert path to string.
      *
      * @return

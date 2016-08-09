@@ -91,6 +91,20 @@ FilePath FilePath::getParentPath() const noexcept
 
 /* ************************************************************************ */
 
+FilePath FilePath::getStem() const noexcept
+{
+    if (m_path == "." || m_path == "..")
+        return m_path;
+
+    auto pos = m_path.find_last_of('.');
+    return pos == StringType::npos
+        ? FilePath{}
+        : FilePath{m_path.substr(0, pos)}
+    ;
+}
+
+/* ************************************************************************ */
+
 FilePath& FilePath::replaceExtension(const String& ext)
 {
     // erase existing extension, including the dot, if any
