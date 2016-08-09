@@ -32,6 +32,10 @@
 #include <utility>
 #include <iterator>
 
+#ifdef _WIN32
+#  include <cwchar>
+#endif
+
 // CeCe
 #include "cece/core/String.hpp"
 #include "cece/core/DynamicArray.hpp"
@@ -50,14 +54,6 @@ inline namespace core {
  */
 class FilePath
 {
-
-// Public Types
-public:
-
-
-    /// Type for storing path.
-    using StringType = String;
-
 
 // Public Constants
 public:
@@ -82,7 +78,7 @@ public:
      *
      * @param source
      */
-    FilePath(StringType source)
+    FilePath(String source)
         : m_path(std::move(source))
     {
         // Nothing to do
@@ -95,26 +91,10 @@ public:
      * @param source
      */
     FilePath(const char* source)
-        : m_path(source, std::strlen(source))
+        : m_path(source)
     {
         // Nothing to do
     }
-
-
-#ifdef _WIN32
-
-    /**
-     * @brief Constructor.
-     *
-     * @param source
-     */
-    FilePath(const wchar_t* source)
-        : m_path(source, std::wstrlen(source))
-    {
-        // Nothing to do
-    }
-
-#endif
 
 
 // Public Operators
@@ -131,7 +111,7 @@ public:
     FilePath& operator/=(const FilePath& path)
     {
         m_path += SEPARATOR;
-        m_path += path.m_path;
+        m_path.append(path.m_path);
         return *this;
     }
 
@@ -143,10 +123,10 @@ public:
      *
      * @return this
      */
-    FilePath& operator/=(const StringType& source)
+    FilePath& operator/=(const String& source)
     {
         m_path += SEPARATOR;
-        m_path += source;
+        m_path.append(source);
         return *this;
     }
 
@@ -161,28 +141,9 @@ public:
     FilePath& operator/=(const char* source)
     {
         m_path += SEPARATOR;
-        m_path += source;
+        m_path.append(source);
         return *this;
     }
-
-
-#ifdef _WIN32
-
-    /**
-     * @brief Append source.
-     *
-     * @param source
-     *
-     * @return this
-     */
-    FilePath& operator/=(const wchar_t* source)
-    {
-        m_path += SEPARATOR;
-        m_path += source;
-        return *this;
-    }
-
-#endif
 
 
     /**
@@ -205,7 +166,7 @@ public:
      *
      * @return
      */
-    FilePath operator/(const StringType& source) const
+    FilePath operator/(const String& source) const
     {
         return FilePath(*this) /= source;
     }
@@ -222,23 +183,6 @@ public:
     {
         return FilePath(*this) /= source;
     }
-
-
-#ifdef _WIN32
-
-    /**
-     * @brief Append source.
-     *
-     * @param source
-     *
-     * @return
-     */
-    FilePath operator/(const wchar_t* source)
-    {
-        return FilePath(*this) /= source;
-    }
-
-#endif
 
 
 // Public Accessors & Mutators
@@ -274,7 +218,7 @@ public:
      *
      * @return
      */
-    StringType getFilename() const noexcept;
+    String getFilename() const noexcept;
 
 
     /**
@@ -282,7 +226,7 @@ public:
      *
      * @return
      */
-    StringType getExtension() const noexcept;
+    String getExtension() const noexcept;
 
 
     /**
@@ -306,7 +250,29 @@ public:
      *
      * @return
      */
-    StringType toString() const noexcept
+    const char* c_str() const noexcept
+    {
+        return m_path.c_str();
+    }
+
+
+    /**
+     * @brief Returns path length.
+     *
+     * @return
+     */
+    String::size_type getSize() const noexcept
+    {
+        return m_path.size();
+    }
+
+
+    /**
+     * @brief Convert path to string.
+     *
+     * @return
+     */
+    String toString() const noexcept
     {
         return m_path;
     }
@@ -319,20 +285,9 @@ public:
      *
      * @deprecated
      */
-    StringType string() const noexcept
+    String string() const noexcept
     {
         return toString();
-    }
-
-
-    /**
-     * @brief Convert path to string.
-     *
-     * @return
-     */
-    const StringType::value_type* c_str() const noexcept
-    {
-        return m_path.c_str();
     }
 
 
@@ -348,6 +303,15 @@ public:
 
 // Public Operations
 public:
+
+
+    /**
+     * @brief Clear path.
+     */
+    void clear() noexcept
+    {
+        m_path.clear();
+    }
 
 
     /**
@@ -382,7 +346,7 @@ public:
 private:
 
     /// Path value.
-    StringType m_path;
+    String m_path;
 
 };
 

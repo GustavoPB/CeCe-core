@@ -53,7 +53,7 @@ void CsvFile::open()
 void CsvFile::open(FilePath path)
 {
     m_path = std::move(path);
-    m_file.open(m_path.c_str(), std::ios::binary | std::ios::out | std::ios::trunc);
+    m_file.open(m_path.toString(), std::ios::binary | std::ios::out | std::ios::trunc);
 
     if (!m_file.is_open())
         throw RuntimeException("Cannot open file: " + m_path.toString());

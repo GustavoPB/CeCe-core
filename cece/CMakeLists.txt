@@ -119,6 +119,10 @@ if (CECE_RENDER_ENABLE)
     find_package(OpenGL REQUIRED)
     target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
+
+    if (MINGW)
+        target_link_libraries(${PROJECT_NAME} ws2_32)
+    endif ()
 endif ()
 
 if (CECE_PHYSICS_BUILTIN)
@@ -130,9 +134,7 @@ if (CECE_PERFORMANCE_MEASUREMENT)
     target_compile_definitions(${PROJECT_NAME} -DCECE_ENABLE_MEASUREMENT)
 endif ()
 
-if (MINGW)
-    target_link_libraries(${PROJECT_NAME} Ws2_32)
-elseif (UNIX AND NOT APPLE)
+if (UNIX AND NOT APPLE)
     target_link_libraries(${PROJECT_NAME} dl)
 endif ()
 

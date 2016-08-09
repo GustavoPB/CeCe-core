@@ -101,7 +101,11 @@ public:
 #if __linux__ || __APPLE__ && __MACH__
         m_ptr = dlopen(m_path.c_str(), RTLD_LAZY);
 #elif _WIN32
-        m_ptr = LoadLibraryW(m_path.c_str());
+        String str = m_path.toString();
+        int size = MultiByteToWideChar(CP_UTF8, 0, str.data(), (int) str.size(), NULL, 0);
+        std::wstring result(size, L'\0');
+        MultiByteToWideChar(CP_UTF8, 0, str.data(), (int) str.size(), &result.front(), size);
+        m_ptr = LoadLibraryW(result.c_str());
 #endif
     }
 

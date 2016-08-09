@@ -40,7 +40,7 @@
 
 // Win32
 #ifdef _WIN32
-#  include <Windows.h>
+#  include <windows.h>
 #endif
 
 // CeCe
@@ -53,14 +53,49 @@ inline namespace core {
 
 /* ************************************************************************ */
 
-FilePath::StringType FilePath::getFilename() const noexcept
+namespace {
+
+/* ************************************************************************ */
+
+#ifdef _WIN32
+std::wstring toWide(const String& str)
+{
+    if (str.empty())
+        return {};
+
+    int size = MultiByteToWideChar(CP_UTF8, 0, str.data(), (int) str.size(), NULL, 0);
+    std::wstring result(size, L'\0');
+    MultiByteToWideChar(CP_UTF8, 0, str.data(), (int) str.size(), &result.front(), size);
+    return result;
+}
+#endif
+
+/* ************************************************************************ */
+
+#ifdef _WIN32
+String fromWide(const std::wstring& str)
+{
+    int size = WideCharToMultiByte(CP_UTF8, 0, str.data(), (int) str.size(), NULL, 0, NULL, NULL);
+    String result(size, '\0');
+    WideCharToMultiByte(CP_UTF8, 0, str.data(), (int) str.size(), &result.front(), size, NULL, NULL);
+    return result;
+}
+#endif
+
+/* ************************************************************************ */
+
+}
+
+/* ************************************************************************ */
+
+String FilePath::getFilename() const noexcept
 {
     if (isEmpty())
         return {};
 
     auto pos = m_path.find_last_of(SEPARATOR);
 
-    if (pos == StringType::npos)
+    if (pos == String::npos)
         return m_path;
 
     return m_path.substr(pos + 1);
@@ -68,11 +103,11 @@ FilePath::StringType FilePath::getFilename() const noexcept
 
 /* ************************************************************************ */
 
-FilePath::StringType FilePath::getExtension() const noexcept
+String FilePath::getExtension() const noexcept
 {
-    const StringType& name = getFilename();
+    const String& name = getFilename();
     auto pos = name.find_last_of('.');
-    if (pos == StringType::npos)
+    if (pos == String::npos)
         return {};
 
     return name.substr(pos);
@@ -83,7 +118,7 @@ FilePath::StringType FilePath::getExtension() const noexcept
 FilePath FilePath::getParentPath() const noexcept
 {
     auto pos = m_path.find_last_of(SEPARATOR);
-    return pos == StringType::npos
+    return pos == String::npos
         ? FilePath{}
         : FilePath{m_path.substr(0, pos)}
     ;
@@ -97,7 +132,7 @@ FilePath FilePath::getStem() const noexcept
         return m_path;
 
     auto pos = m_path.find_last_of('.');
-    return pos == StringType::npos
+    return pos == String::npos
         ? FilePath{}
         : FilePath{m_path.substr(0, pos)}
     ;
@@ -116,7 +151,7 @@ FilePath& FilePath::replaceExtension(const String& ext)
         if (ext.front() != '.')
             m_path.push_back('.');
 
-        m_path.append(ext);
+        m_path.append(ext.begin(), ext.end());
     }
 
     return *this;
@@ -126,13 +161,13 @@ FilePath& FilePath::replaceExtension(const String& ext)
 
 bool isFile(const FilePath& path) noexcept
 {
-    auto str = path.toString();
-#if defined(_WIN32)
+#ifdef _WIN32
+    auto str = toWide(path.toString());
     DWORD attr = GetFileAttributesW(str.c_str());
     return (attr != INVALID_FILE_ATTRIBUTES && (attr & FILE_ATTRIBUTE_DIRECTORY) == 0);
 #else
     struct stat sb;
-    if (stat(str.c_str(), &sb))
+    if (stat(path.c_str(), &sb))
         return false;
     return S_ISREG(sb.st_mode);
 #endif
@@ -142,15 +177,15 @@ bool isFile(const FilePath& path) noexcept
 
 bool isDirectory(const FilePath& path) noexcept
 {
-    auto str = path.toString();
-#if defined(_WIN32)
+#ifdef _WIN32
+    auto str = toWide(path.toString());
     DWORD result = GetFileAttributesW(str.c_str());
     if (result == INVALID_FILE_ATTRIBUTES)
         return false;
     return (result & FILE_ATTRIBUTE_DIRECTORY) != 0;
 #else
     struct stat sb;
-    if (stat(str.c_str(), &sb))
+    if (stat(path.c_str(), &sb))
         return false;
     return S_ISDIR(sb.st_mode);
 #endif
@@ -160,12 +195,12 @@ bool isDirectory(const FilePath& path) noexcept
 
 bool fileExists(const FilePath& path) noexcept
 {
-    auto str = path.toString();
-#ifdef __unix__
-    return access(str.c_str(), F_OK) != -1;
-#elif defined(_WIN32)
-    DWORD dwAttrib = GetFileAttributes(str.c_str());
+#ifdef _WIN32
+    auto str = toWide(path.toString());
+    DWORD dwAttrib = GetFileAttributesW(str.c_str());
     return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+#else
+    return access(path.c_str(), F_OK) != -1;
 #endif
 }
 
@@ -203,13 +238,13 @@ FilePath tempDirectory()
     FilePath p;
     for (int i = 0; i < 4; ++i)
     {
-        wchar_t* env = wgetenv(envList[i]);
+        wchar_t* env = _wgetenv(envList[i]);
 
         if (env)
         {
-            p = env;
+            p = fromWide(env);
             if (i >= 2)
-                p /= L"Temp";
+                p /= "Temp";
 
             if (fileExists(p) && isDirectory(p))
                 break;
@@ -220,13 +255,13 @@ FilePath tempDirectory()
 
     if (p.isEmpty())
     {
-        StringType buf(::GetWindowsDirectoryW(NULL, 0));
+        std::wstring buf(::GetWindowsDirectoryW(NULL, 0), '\0');
 
         if (buf.empty() || ::GetWindowsDirectoryW(&buf[0], static_cast<UINT>(buf.size())) == 0)
             throw RuntimeException("Unable to obtain windows directory for TEMP directory");
 
-        p = buf;
-        p /= L"Temp";
+        p = fromWide(buf);
+        p /= "Temp";
     }
 
     return p;
@@ -255,8 +290,9 @@ DynamicArray<FilePath> openDirectory(const FilePath& dir)
 
     return entries;
 #else
-    WIN32_FIND_DATA ffd;
-    HANDLE hFind = FindFirstFile(dir.c_str(), &ffd);
+    WIN32_FIND_DATAW ffd;
+    auto str = toWide(dir.c_str());
+    HANDLE hFind = FindFirstFileW(str.c_str(), &ffd);
     if (hFind == INVALID_HANDLE_VALUE)
         return {};
 
@@ -264,14 +300,9 @@ DynamicArray<FilePath> openDirectory(const FilePath& dir)
 
     do
     {
-        entries.push_back(dir / fdd.cFileName);
+        entries.push_back(dir / fromWide(ffd.cFileName));
     }
-    while (FindNextFile(hFind, &ffd) != 0);
-
-    if (GetLastError() != ERROR_NO_MORE_FILES) {
-        FindClose(hFind);
-        return false;
-    }
+    while (FindNextFileW(hFind, &ffd) != 0);
 
     FindClose(hFind);
 

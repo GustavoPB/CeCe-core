@@ -56,14 +56,6 @@ TEST(FilePath, construct)
         EXPECT_FALSE(path.isEmpty());
         EXPECT_EQ(str, path.toString());
     }
-
-#ifdef _WIN32
-    {
-        auto path = FilePath(L"Dir/filename");
-        EXPECT_FALSE(path.isEmpty());
-        EXPECT_EQ(L"Dir/filename", path.toString());
-    }
-#endif
 }
 
 /* ************************************************************************ */

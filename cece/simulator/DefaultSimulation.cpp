@@ -85,7 +85,7 @@ UniquePtr<InOutStream> DefaultSimulation::getResource(StringView name) noexcept
     if (!fileExists(path))
         return nullptr;
 
-    auto file = makeUnique<FileStream>(path.c_str(), std::ios::in | std::ios::out | std::ios::binary);
+    auto file = makeUnique<FileStream>(path.toString(), std::ios::in | std::ios::out | std::ios::binary);
 
     if (!file->is_open())
         return nullptr;

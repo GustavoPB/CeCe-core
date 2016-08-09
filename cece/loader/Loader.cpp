@@ -45,7 +45,7 @@ UniquePtr<simulator::Simulation> Loader::fromFile(
     const plugin::Repository& repository, const FilePath& filename,
     ViewPtr<const Parameters> parameters) const
 {
-    std::ifstream file(filename.c_str(), std::ios::in);
+    std::ifstream file(filename.toString(), std::ios::in);
     return fromStream(repository, file, filename, parameters);
 }
 
@@ -64,7 +64,7 @@ UniquePtr<simulator::Simulation> Loader::fromSource(
 void Loader::toFile(const simulator::Simulation& simulation, const FilePath& filename) const
 {
     // Write code into file
-    std::ofstream file(filename.c_str(), std::ios::out);
+    std::ofstream file(filename.toString(), std::ios::out);
     toStream(file, simulation, filename);
 }
 
