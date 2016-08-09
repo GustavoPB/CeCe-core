@@ -75,7 +75,7 @@ FilePath::StringType FilePath::getExtension() const noexcept
     if (pos == StringType::npos)
         return {};
 
-    return name.substr(pos + 1);
+    return name.substr(pos);
 }
 
 /* ************************************************************************ */
