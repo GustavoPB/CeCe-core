@@ -29,6 +29,7 @@
 
 // C++
 #include <type_traits>
+#include <algorithm>
 
 // CeCe
 #include "cece/core/Assert.hpp"
