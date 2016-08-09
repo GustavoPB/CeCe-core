@@ -28,8 +28,6 @@
 :: Shared configuration arguments
 SET ARGS=^
     -DCMAKE_BUILD_TYPE=Release ^
-    -DBOOST_ROOT="%BOOST_ROOT%" ^
-    -DBOOST_LIBRARYDIR="%BOOST_LIBRARYDIR%" ^
     -DCECE_TESTS_BUILD=On
 
 md build

@@ -28,7 +28,6 @@
 sudo apt-get install -qq \
 	g++-4.9 \
 	clang-3.6 \
-	libboost-filesystem1.55-dev \
 	xorg-dev \
 	libgl1-mesa-dev \
 	libpython2.7-dev
