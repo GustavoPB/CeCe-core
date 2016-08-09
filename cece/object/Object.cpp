@@ -510,7 +510,7 @@ void Object::initShapes()
     for (const auto& shape : getShapes())
     {
         // Get shape type
-        const auto type = variantApplyVisitor(Shape::GetType(), shape);
+        const auto type = shape.getType();
 
         UniquePtr<b2Shape> bodyShape;
 

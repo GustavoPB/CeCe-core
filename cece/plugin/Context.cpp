@@ -174,7 +174,7 @@ ViewPtr<const Api> Context::removePlugin(StringView name)
 UniquePtr<simulator::Simulation> Context::createSimulation(const FilePath& filepath, ViewPtr<const Parameters> parameters) const
 {
     // File extension
-    auto ext = filepath.extension().string().substr(1);
+    auto ext = filepath.getExtension().substr(1);
 
     // Foreach loaded APIs and find factory
     for (auto plugin : m_plugins)

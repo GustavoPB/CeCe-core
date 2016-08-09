@@ -29,7 +29,6 @@
 
 // CeCe
 #include "cece/core/Units.hpp"
-#include "cece/core/Variant.hpp"
 #include "cece/core/VectorUnits.hpp"
 #include "cece/core/DynamicArray.hpp"
 
@@ -105,36 +104,8 @@ struct ShapeEdges
 /**
  * @brief Structure for storing shape.
  */
-class Shape : public Variant<
-    ShapeUndefined,
-    ShapeCircle,
-    ShapeRectangle,
-    ShapeEdges
->
+class Shape
 {
-    friend struct GetType;
-
-    /// Parent type
-    using Parent = Variant<
-        ShapeUndefined,
-        ShapeCircle,
-        ShapeRectangle,
-        ShapeEdges
-    >;
-
-
-// Public Structures
-public:
-
-
-    struct GetType : public VariantStaticVisitor<ShapeType>
-    {
-        ShapeType operator()(ShapeUndefined) const noexcept { return ShapeType::Undefined; }
-        ShapeType operator()(const ShapeCircle&) const noexcept { return ShapeType::Circle; }
-        ShapeType operator()(const ShapeRectangle&) const noexcept { return ShapeType::Rectangle; }
-        ShapeType operator()(const ShapeEdges&) const noexcept { return ShapeType::Edges; }
-    };
-
 
 // Public Ctors & Dtors
 public:
@@ -144,7 +115,6 @@ public:
      * @brief Default constructor.
      */
     Shape()
-        : Parent()
     {
         // Nothing to do
     }
@@ -156,7 +126,8 @@ public:
      * @param circle
      */
     Shape(ShapeCircle circle)
-        : Parent(std::move(circle))
+        : m_type(ShapeType::Circle)
+        , m_circle(std::move(circle))
     {
         // Nothing to do
     }
@@ -168,7 +139,8 @@ public:
      * @param rectangle
      */
     Shape(ShapeRectangle rectangle)
-        : Parent(std::move(rectangle))
+        : m_type(ShapeType::Rectangle)
+        , m_rectangle(std::move(rectangle))
     {
         // Nothing to do
     }
@@ -180,7 +152,8 @@ public:
      * @param edges
      */
     Shape(ShapeEdges edges)
-        : Parent(std::move(edges))
+        : m_type(ShapeType::Edges)
+        , m_edges(std::move(edges))
     {
         // Nothing to do
     }
@@ -197,7 +170,7 @@ public:
      */
     ShapeType getType() const noexcept
     {
-        return variantApplyVisitor(GetType{}, *this);
+        return m_type;
     }
 
 
@@ -208,7 +181,7 @@ public:
      */
     ShapeCircle& getCircle() noexcept
     {
-        return get<ShapeCircle>(*this);
+        return m_circle;
     }
 
 
@@ -219,7 +192,7 @@ public:
      */
     const ShapeCircle& getCircle() const noexcept
     {
-        return get<ShapeCircle>(*this);
+        return m_circle;
     }
 
 
@@ -230,7 +203,7 @@ public:
      */
     ShapeRectangle& getRectangle() noexcept
     {
-        return get<ShapeRectangle>(*this);
+        return m_rectangle;
     }
 
 
@@ -241,7 +214,7 @@ public:
      */
     const ShapeRectangle& getRectangle() const noexcept
     {
-        return get<ShapeRectangle>(*this);
+        return m_rectangle;
     }
 
 
@@ -252,7 +225,7 @@ public:
      */
     ShapeEdges& getEdges() noexcept
     {
-        return get<ShapeEdges>(*this);
+        return m_edges;
     }
 
 
@@ -263,7 +236,7 @@ public:
      */
     const ShapeEdges& getEdges() const noexcept
     {
-        return get<ShapeEdges>(*this);
+        return m_edges;
     }
 
 
@@ -323,6 +296,15 @@ public:
         return Shape{ShapeEdges{center, std::move(edges)}};
     }
 
+
+/// Private Data Types
+private:
+
+    /// Stored shape type.
+    ShapeType m_type = ShapeType::Undefined;
+    ShapeCircle m_circle;
+    ShapeRectangle m_rectangle;
+    ShapeEdges m_edges;
 };
 
 /* ************************************************************************ */

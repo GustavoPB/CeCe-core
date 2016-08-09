@@ -80,12 +80,12 @@ DefaultSimulation::~DefaultSimulation()
 UniquePtr<InOutStream> DefaultSimulation::getResource(StringView name) noexcept
 {
     // Path to resource
-    const auto path = getFileName().parent_path() / String(name);
+    const auto path = getFileName().getParentPath() / String(name);
 
     if (!fileExists(path))
         return nullptr;
 
-    auto file = makeUnique<FileStream>(path.string(), std::ios::in | std::ios::out | std::ios::binary);
+    auto file = makeUnique<FileStream>(path.c_str(), std::ios::in | std::ios::out | std::ios::binary);
 
     if (!file->is_open())
         return nullptr;

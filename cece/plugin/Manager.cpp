@@ -29,14 +29,12 @@
 // C++
 #include <utility>
 
-// Boost
-#include <boost/filesystem.hpp>
-
 // CeCe
 #include "cece/core/Assert.hpp"
 #include "cece/core/Log.hpp"
 #include "cece/core/Exception.hpp"
 #include "cece/core/IteratorRange.hpp"
+#include "cece/core/FilePath.hpp"
 #include "cece/loader/Loader.hpp"
 #include "cece/loader/FactoryManager.hpp"
 #include "cece/plugin/Api.hpp"
@@ -84,7 +82,7 @@ StringView Manager::getName(ViewPtr<const Api> api) const noexcept
 
 void Manager::addDirectory(FilePath path)
 {
-    Log::debug("New plugins directory: `", path.string(), "`");
+    Log::debug("New plugins directory: `", path, "`");
 
     m_directories.push_back(path);
 
@@ -139,31 +137,28 @@ ViewPtr<Api> Manager::load(StringView name)
 
 Map<String, FilePath> Manager::scanDirectory(const FilePath& directory) noexcept
 {
-    using namespace boost::filesystem;
-
     Map<String, FilePath> result;
 
-    Log::debug("Scanning `", directory.string(), "` for plugins");
+    Log::debug("Scanning `", directory, "` for plugins");
 
-    if (!is_directory(directory))
+    if (!isDirectory(directory))
     {
-        Log::warning("Directory `", directory.string(), "` doesn't exists");
+        Log::warning("Directory `", directory, "` doesn't exists");
         return result;
     }
 
     // Foreach directory
-    for (const auto& entry : makeRange(directory_iterator(directory), directory_iterator()))
+    for (const auto& path : openDirectory(directory))
     {
         // Only files
-        if (!is_regular_file(entry))
+        if (!isFile(path))
         {
-            Log::debug("Skipping `", entry.path().string(), "` - not a file");
+            Log::debug("Skipping `", path, "` - not a file");
             continue;
         }
 
         // Get path
-        auto path = entry.path();
-        const auto filename = path.filename().string();
+        const auto filename = path.getFilename();
         const auto prefixLength = Library::FILE_PREFIX.length();
         const auto suffixLength = Library::FILE_EXTENSION.length();
         const auto suffixStart = filename.length() - suffixLength;
@@ -178,7 +173,7 @@ Map<String, FilePath> Manager::scanDirectory(const FilePath& directory) noexcept
         if (filename.substr(suffixStart) != Library::FILE_EXTENSION)
             continue;
 
-        Log::debug("Plugin: ", filename.substr(prefixLength, suffixStart - prefixLength), " @ ", path.string());
+        Log::debug("Plugin: ", filename.substr(prefixLength, suffixStart - prefixLength), " @ ", path);
 
         result.emplace(filename.substr(prefixLength, suffixStart - prefixLength), std::move(path));
     }

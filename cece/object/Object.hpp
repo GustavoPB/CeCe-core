@@ -38,7 +38,6 @@
 // CeCe
 #include "cece/core/Assert.hpp"
 #include "cece/core/Units.hpp"
-#include "cece/core/Any.hpp"
 #include "cece/core/VectorUnits.hpp"
 #include "cece/core/DynamicArray.hpp"
 #include "cece/core/Map.hpp"
@@ -173,79 +172,6 @@ public:
     IdType getId() const noexcept
     {
         return m_id;
-    }
-
-
-    /**
-     * @brief Returns object dynamic values.
-     *
-     * @return
-     */
-    const Map<String, Any>& getValues() const noexcept
-    {
-        return m_values;
-    }
-
-
-    /**
-     * @brief Check if dynamic value exists.
-     *
-     * @param name Value name.
-     *
-     * @return If value exists.
-     */
-    bool hasValue(const String& name) const noexcept
-    {
-        return m_values.find(name) != m_values.end();
-    }
-
-
-    /**
-     * @brief Returns mutable object dynamic value.
-     *
-     * If value not exists yet, is created with default constructor.
-     *
-     * @param name Value name.
-     *
-     * @return Mutable reference to dynamic object.
-     */
-    Any& getValue(const String& name) noexcept
-    {
-        return m_values[name];
-    }
-
-
-    /**
-     * @brief Returns object dynamic value.
-     *
-     * @param name Value name.
-     * @param def  Default value if value doesn't exists.
-     *
-     * @return
-     */
-    Any getValue(const String& name, const Any& def = {}) const noexcept
-    {
-        auto it = m_values.find(name);
-        return it != m_values.end() ? it->second : def;
-    }
-
-
-    /**
-     * @brief Returns object dynamic value cast to custom type.
-     *
-     * @tparam T Output value type.
-     *
-     * @param name Value name.
-     * @param def  Default value if value doesn't exists.
-     *
-     * @return Required value cast to required type.
-     *
-     * @throw BadCastException
-     */
-    template<typename T>
-    T getValue(const String& name, T def = {}) const
-    {
-        return AnyCast<T>(getValue(name, Any(std::move(def))));
     }
 
 
@@ -436,21 +362,6 @@ public:
 
 // Public Mutators
 public:
-
-
-    /**
-     * @brief Set object dynamic value.
-     *
-     * @tparam T Value type.
-     *
-     * @param name  Value name.
-     * @param value Value.
-     */
-    template<typename T>
-    void setValue(const String& name, T&& value) noexcept
-    {
-        m_values[name] = std::forward<T>(value);
-    }
 
 
     /**
@@ -807,9 +718,6 @@ private:
 
     /// Object unique ID.
     IdType m_id;
-
-    /// Object data.
-    Map<String, Any> m_values;
 
     /// A list of object shapes.
     DynamicArray<Shape> m_shapes;

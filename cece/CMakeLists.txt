@@ -113,17 +113,6 @@ generate_export_header(${PROJECT_NAME}
 
 # ######################################################################### #
 
-# Boost libraries
-if (UNIX AND NOT APPLE)
-    set(Boost_USE_STATIC_LIBS Off)
-else ()
-    set(Boost_USE_STATIC_LIBS On)
-endif ()
-
-find_package(Boost REQUIRED filesystem system)
-target_include_directories(${PROJECT_NAME} PUBLIC ${Boost_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${Boost_LIBRARIES})
-
 # Include OpenGL if rendering is enabled
 if (CECE_RENDER_ENABLE)
     # OpenGL library is required

@@ -74,7 +74,6 @@ set(SRCS
     ValueIterator.hpp
     Range.hpp
     VectorRange.hpp
-    Any.hpp
     IntegerSequence.hpp
     Tuple.hpp
     UniquePtr.hpp
@@ -86,9 +85,7 @@ set(SRCS
     Real.hpp
     Mutex.hpp
     Pair.hpp
-    Variant.hpp
     SharedPtr.hpp
-    TriBool.hpp
     Parameters.hpp
     Parameters.cpp
     Factory.hpp

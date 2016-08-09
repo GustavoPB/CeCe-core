@@ -36,9 +36,6 @@
 #include <cstdlib>
 #include <regex>
 
-// Boost
-#include <boost/filesystem.hpp>
-
 #if __linux__ || __APPLE__ && __MACH__
 #include <dlfcn.h>
 #elif _WIN32

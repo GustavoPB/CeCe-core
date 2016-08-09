@@ -74,7 +74,7 @@ void ExportModule::storeConfig(config::Configuration& config) const
 void ExportModule::init()
 {
     // Open CSV file
-    m_export = DataExport::create(m_filePath.string());
+    m_export = DataExport::create(m_filePath.toString());
 
     Log::info("Exporting data into: ", getFilePath());
 }
