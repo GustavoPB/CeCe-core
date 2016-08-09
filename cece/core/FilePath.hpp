@@ -257,6 +257,19 @@ public:
 
 
     /**
+     * @brief Check if path is empty.
+     *
+     * @return
+     *
+     * @deprecated
+     */
+    bool empty() const noexcept
+    {
+        return isEmpty();
+    }
+
+
+    /**
      * @brief Returns path file name.
      *
      * @return
@@ -296,6 +309,19 @@ public:
     StringType toString() const noexcept
     {
         return m_path;
+    }
+
+
+    /**
+     * @brief Convert path to string.
+     *
+     * @return
+     *
+     * @deprecated
+     */
+    StringType string() const noexcept
+    {
+        return toString();
     }
 
 
