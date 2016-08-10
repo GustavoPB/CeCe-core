@@ -98,6 +98,13 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     WINDOWS_EXPORT_ALL_SYMBOLS On
 )
 
+if (MINGW)
+    # MinGW bug
+    target_compile_definitions(${PROJECT_NAME}
+        -D__NO_INLINE__
+    )
+endif ()
+
 # Include directories
 target_include_directories(${PROJECT_NAME}
     PUBLIC
