@@ -30,17 +30,13 @@
 #include <cstdlib>
 #include <utility>
 
-// Unix
-#ifdef __unix__
+#ifdef _WIN32
+#  include <windows.h>
+#else
 #  include <unistd.h>
 #  include <dirent.h>
 #  include <sys/stat.h>
 #  include <sys/types.h>
-#endif
-
-// Win32
-#ifdef _WIN32
-#  include <windows.h>
 #endif
 
 // CeCe
