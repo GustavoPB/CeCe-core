@@ -210,24 +210,7 @@ FilePath tempDirectory()
 {
     // Based on boost implementation
 
-#ifdef __unix__
-    const char* val = nullptr;
-
-    // Check env variables
-    (val = std::getenv("TMPDIR" )) ||
-    (val = std::getenv("TMP"    )) ||
-    (val = std::getenv("TEMP"   )) ||
-    (val = std::getenv("TEMPDIR"));
-
-    // Env variable not set, use /tmp
-    FilePath p((val != nullptr) ? val : "/tmp");
-
-    if (p.isEmpty() || !isDirectory(p))
-        throw RuntimeException("Unable to find TEMP directory");
-
-    return p;
-#else  // Windows
-
+#ifdef _WIN32
     const wchar_t* envList[] = {
         L"TMP",
         L"TEMP",
@@ -265,7 +248,22 @@ FilePath tempDirectory()
     }
 
     return p;
+#else
+    const char* val = nullptr;
 
+    // Check env variables
+    (val = std::getenv("TMPDIR" )) ||
+    (val = std::getenv("TMP"    )) ||
+    (val = std::getenv("TEMP"   )) ||
+    (val = std::getenv("TEMPDIR"));
+
+    // Env variable not set, use /tmp
+    FilePath p((val != nullptr) ? val : "/tmp");
+
+    if (p.isEmpty() || !isDirectory(p))
+        throw RuntimeException("Unable to find TEMP directory");
+
+    return p;
 #endif
 }
 
@@ -274,22 +272,7 @@ FilePath tempDirectory()
 DynamicArray<FilePath> openDirectory(const FilePath& dir)
 {
 
-#ifdef __unix__
-    DIR* d;
-
-    if ((d = opendir(dir.c_str())) == nullptr)
-        return {};
-
-    DynamicArray<FilePath> entries;
-
-    struct dirent* de;
-    while ((de = readdir(d)) != NULL)
-        entries.push_back(dir / de->d_name);
-
-    closedir(d);
-
-    return entries;
-#else
+#ifdef _WIN32
     WIN32_FIND_DATAW ffd;
     auto str = toWide(dir.c_str());
     HANDLE hFind = FindFirstFileW(str.c_str(), &ffd);
@@ -305,6 +288,21 @@ DynamicArray<FilePath> openDirectory(const FilePath& dir)
     while (FindNextFileW(hFind, &ffd) != 0);
 
     FindClose(hFind);
+
+    return entries;
+#else
+    DIR* d;
+
+    if ((d = opendir(dir.c_str())) == nullptr)
+        return {};
+
+    DynamicArray<FilePath> entries;
+
+    struct dirent* de;
+    while ((de = readdir(d)) != NULL)
+        entries.push_back(dir / de->d_name);
+
+    closedir(d);
 
     return entries;
 #endif
