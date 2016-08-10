@@ -101,7 +101,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 if (MINGW)
     # MinGW bug
     target_compile_definitions(${PROJECT_NAME}
-        -D__NO_INLINE__
+        PUBLIC -D__NO_INLINE__
     )
 endif ()
 
@@ -138,7 +138,9 @@ endif ()
 
 # Enable time measurement
 if (CECE_PERFORMANCE_MEASUREMENT)
-    target_compile_definitions(${PROJECT_NAME} -DCECE_ENABLE_MEASUREMENT)
+    target_compile_definitions(${PROJECT_NAME}
+        PUBLIC -DCECE_ENABLE_MEASUREMENT
+    )
 endif ()
 
 if (UNIX AND NOT APPLE)
