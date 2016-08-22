@@ -91,7 +91,6 @@ add_library(${PROJECT_NAME} SHARED ${SRCS})
 
 # Properties
 set_target_properties(${PROJECT_NAME} PROPERTIES
-    FRAMEWORK On
     CXX_STANDARD 11
     CXX_EXTENSIONS Off
     CXX_STANDARD_REQUIRED On
