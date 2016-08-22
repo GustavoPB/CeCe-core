@@ -59,13 +59,13 @@ namespace plugin {
 /* ************************************************************************ */
 
 #if __linux__
-const String Library::FILE_PREFIX = "libplugin-";
+const String Library::FILE_PREFIX = "libcece-";
 #elif __MINGW32__
-const String Library::FILE_PREFIX = "libplugin-";
+const String Library::FILE_PREFIX = "libcece-";
 #elif _WIN32
-const String Library::FILE_PREFIX = "plugin-";
+const String Library::FILE_PREFIX = "cece-";
 #elif __APPLE__ && __MACH__
-const String Library::FILE_PREFIX = "libplugin-";
+const String Library::FILE_PREFIX = "libcece-";
 #endif
 
 /* ************************************************************************ */
