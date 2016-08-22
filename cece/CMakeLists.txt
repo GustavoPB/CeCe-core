@@ -170,3 +170,10 @@ if (CECE_TESTS_BUILD)
 endif ()
 
 # ######################################################################### #
+
+install(TARGETS ${PROJECT_NAME}
+    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION lib
+)
+
+# ######################################################################### #
