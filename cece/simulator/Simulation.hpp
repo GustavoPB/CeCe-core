@@ -58,16 +58,14 @@ namespace cece {
     namespace object { class Type; }
     namespace program { class Program; }
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     namespace render { class Context; }
     namespace simulator { class Visualization; }
 #endif
 }
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
 /// @deprecated
 class b2World;
-#endif
 
 /* ************************************************************************ */
 
@@ -173,7 +171,7 @@ public:
     virtual units::Time getTotalTime() const noexcept = 0;
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Returns visualization
@@ -393,8 +391,6 @@ public:
     virtual DynamicArray<ViewPtr<object::Object>> getObjects(StringView type) const noexcept;
 
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
-
     /**
      * @brief Returns physics world.
      *
@@ -411,8 +407,6 @@ public:
      * @deprecated
      */
     virtual const b2World& getWorld() const noexcept = 0;
-
-#endif
 
 
     /**
@@ -771,7 +765,7 @@ public:
     virtual bool reset() = 0;
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Render simulation.

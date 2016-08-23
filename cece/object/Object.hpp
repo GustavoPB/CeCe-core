@@ -49,18 +49,16 @@
 #include "cece/program/Program.hpp"
 #include "cece/program/Container.hpp"
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 #  include "cece/render/Color.hpp"
 #  include "cece/render/Context.hpp"
 #endif
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
 class b2Body;
 class b2Shape;
 class b2Joint;
-#endif
 
 namespace cece { namespace config { class Configuration; } }
 namespace cece { namespace simulator { class Simulation; } }
@@ -186,7 +184,7 @@ public:
     }
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Returns if object is visible.
@@ -300,8 +298,6 @@ public:
     units::Mass getMass() const noexcept;
 
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
-
     /**
      * @brief Returns physical body.
      *
@@ -311,8 +307,6 @@ public:
     {
         return m_body;
     }
-
-#endif
 
 
     /**
@@ -372,7 +366,7 @@ public:
     void setType(Type type) noexcept;
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Set if object is visible.
@@ -658,7 +652,7 @@ public:
     virtual void initShapes();
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Render object.
@@ -731,7 +725,7 @@ private:
     /// Object type.
     Type m_type;
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     // If object is visible.
     bool m_visible = true;
@@ -740,8 +734,6 @@ private:
     render::Color m_color = render::colors::BLACK;
 
 #endif
-
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
 
     /// Physics body.
     b2Body* m_body;
@@ -754,19 +746,6 @@ private:
 
     /// Body shapes.
     DynamicArray<UniquePtr<b2Shape>> m_bodyShapes;
-
-#else
-
-    /// Object position
-    units::PositionVector m_position;
-
-    /// Object rotation.
-    units::Angle m_rotation;
-
-    /// Object velocity.
-    units::VelocityVector m_velocity;
-
-#endif
 
     /// Box2D doesn't have accessor to force.
     units::ForceVector m_force;

@@ -46,10 +46,7 @@
 #include "cece/init/Initializer.hpp"
 #include "cece/module/Module.hpp"
 #include "cece/simulator/TimeMeasurement.hpp"
-
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
 #include "cece/simulator/ConverterBox2D.hpp"
-#endif
 
 /* ************************************************************************ */
 
@@ -61,9 +58,7 @@ namespace simulator {
 DefaultSimulation::DefaultSimulation(const plugin::Repository& repository, FilePath path) noexcept
     : m_pluginContext(repository)
     , m_fileName(std::move(path))
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     , m_world{makeUnique<b2World>(b2Vec2{0.0f, 0.0f})}
-#endif
 {
     // Nothing to do
 }
@@ -178,11 +173,7 @@ DynamicArray<ViewPtr<object::Object>> DefaultSimulation::getObjects(StringView t
 
 units::AccelerationVector DefaultSimulation::getGravity() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     return ConverterBox2D::getInstance().convertLinearAcceleration(m_world->GetGravity());
-#else
-    return AccelerationVector{Zero};
-#endif
 }
 
 /* ************************************************************************ */
@@ -196,11 +187,7 @@ units::Time DefaultSimulation::getPhysicsEngineTimeStep() const noexcept
 
 units::Length DefaultSimulation::getMaxObjectTranslation() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     return ConverterBox2D::getInstance().getMaxObjectTranslation();
-#else
-    return units::Length{1e3};
-#endif
 }
 
 /* ************************************************************************ */
@@ -240,9 +227,7 @@ void DefaultSimulation::setTimeStep(units::Time dt)
 
     m_timeStep = dt;
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     ConverterBox2D::getInstance().setTimeStep(dt);
-#endif
 }
 
 /* ************************************************************************ */
@@ -372,21 +357,15 @@ void DefaultSimulation::deleteProgram(StringView name)
 
 void DefaultSimulation::setGravity(const units::AccelerationVector& gravity) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     m_world->SetGravity(ConverterBox2D::getInstance().convertLinearAcceleration(gravity));
-#else
-    // TODO: store
-#endif
 }
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
 void DefaultSimulation::setPhysicsEngineTimeStep(units::Time dt) noexcept
 {
     ConverterBox2D::getInstance().setTimeStepBox2D(dt);
 }
-#endif
 
 /* ************************************************************************ */
 
@@ -432,12 +411,12 @@ void DefaultSimulation::initialize(AtomicBool& flag)
     m_initializers.init(*this);
 
     // Update states
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     m_modules.drawStoreState(m_visualization);
     m_objects.drawStoreState(m_visualization);
 #endif
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     {
 #ifdef CECE_THREAD_SAFE
         MutexGuard _(m_mutex);
@@ -474,24 +453,22 @@ bool DefaultSimulation::update()
     // Update objects
     updateObjects();
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     {
         auto _ = measure_time("sim.physics", TimeMeasurement(this));
 
         m_world->Step(static_cast<float32>(getPhysicsEngineTimeStep().value()), 10, 10);
     }
-#endif
 
     // Detect object that leaved the scene
     detectDeserters();
 
     // Update states
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     m_modules.drawStoreState(m_visualization);
     m_objects.drawStoreState(m_visualization);
 #endif
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     {
 #ifdef CECE_THREAD_SAFE
         MutexGuard _(m_mutex);
@@ -544,7 +521,7 @@ void DefaultSimulation::terminate()
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void DefaultSimulation::draw(render::Context& context)
 {
     context.setStencilBuffer(
@@ -564,11 +541,8 @@ void DefaultSimulation::draw(render::Context& context)
     if (m_visualization.isEnabled("objects", true))
         m_objects.draw(context);
 
-#if defined(CECE_ENABLE_BOX2D_PHYSICS) && defined(CECE_ENABLE_BOX2D_PHYSICS_DEBUG)
     if (m_visualization.isEnabled("physics", false))
         m_world->DrawDebugData();
-#endif
-
 }
 #endif
 

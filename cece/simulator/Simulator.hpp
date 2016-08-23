@@ -38,7 +38,7 @@
 // CeCe
 #include "cece/core/Units.hpp"
 #include "cece/core/UniquePtr.hpp"
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 #include "cece/render/Context.hpp"
 #endif
 
@@ -100,7 +100,7 @@ public:
     }
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Returns rendering context.
@@ -179,7 +179,7 @@ public:
     bool update();
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Initialize simulation for rendering.
@@ -209,7 +209,7 @@ private:
     /// Flag if thread is running
     std::atomic<bool> m_isRunning{false};
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     /// Rendering context.
     render::Context m_renderContext;
 #endif

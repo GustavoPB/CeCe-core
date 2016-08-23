@@ -32,7 +32,7 @@
 
 /* ************************************************************************ */
 
-#ifndef CECE_ENABLE_RENDER
+#ifndef CECE_RENDER
 #error Rendering part requires enabled rendering.
 #endif
 

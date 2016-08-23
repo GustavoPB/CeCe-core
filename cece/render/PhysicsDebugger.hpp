@@ -32,12 +32,6 @@
 
 /* ************************************************************************ */
 
-#ifndef CECE_ENABLE_BOX2D_PHYSICS_DEBUG
-#error Physics debugging has to be enabled.
-#endif
-
-/* ************************************************************************ */
-
 // Box2D
 #include <Box2D/Box2D.h>
 

@@ -276,20 +276,12 @@ void Library::checkConfig(Config* config)
     if (config->realSize != sizeof(config::RealType))
         throw RuntimeException("Library '" + getName() + "' is built with different real type than CeCe");
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     if (!config->renderEnabled)
         throw RuntimeException("Library '" + getName() + "' is built without render support, but CeCe did");
 #else
     if (config->renderEnabled)
         throw RuntimeException("Library '" + getName() + "' is built with render support, but CeCe didn't");
-#endif
-
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
-    if (!config->builtinPhysics)
-        throw RuntimeException("Library '" + getName() + "' is built without builtin physics, but CeCe did");
-#else
-    if (config->builtinPhysics)
-        throw RuntimeException("Library '" + getName() + "' is built with builtin physics, but CeCe didn't");
 #endif
 
 #ifdef CECE_THREAD_SAFE

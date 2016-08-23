@@ -38,18 +38,10 @@
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
-#  define CECE_ENABLE_RENDER_VALUE 1
+#ifdef CECE_RENDER
+#  define CECE_RENDER_VALUE 1
 #else
-#  define CECE_ENABLE_RENDER_VALUE 0
-#endif
-
-/* ************************************************************************ */
-
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
-#  define CECE_ENABLE_BOX2D_PHYSICS_VALUE 1
-#else
-#  define CECE_ENABLE_BOX2D_PHYSICS_VALUE 0
+#  define CECE_RENDER_VALUE 0
 #endif
 
 /* ************************************************************************ */
@@ -158,8 +150,7 @@
         static cece::plugin::Config config = { \
             cece::config::PLUGIN_API_VERSION,   /* apiVersion */ \
             sizeof(cece::config::RealType),     /* realSize */ \
-            CECE_ENABLE_RENDER_VALUE,           /* renderEnabled */ \
-            CECE_ENABLE_BOX2D_PHYSICS_VALUE,    /* builtinPhysics */ \
+            CECE_RENDER_VALUE,                  /* renderEnabled */ \
             CECE_THREAD_SAFE_VALUE,             /* threadSafe */ \
             cece::config::DIMENSION             /* dimension */ \
         }; \

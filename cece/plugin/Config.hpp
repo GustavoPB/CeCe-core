@@ -41,7 +41,6 @@ struct Config
     int apiVersion;
     int realSize;
     int renderEnabled;
-    int builtinPhysics;
     int threadSafe;
     int dimension;
 };

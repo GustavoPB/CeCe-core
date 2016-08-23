@@ -23,10 +23,6 @@
 #                                                                           #
 # ######################################################################### #
 
-set(CECE_ENABLE_RENDER ${CECE_RENDER_ENABLE})
-set(CECE_ENABLE_BOX2D_PHYSICS ${CECE_PHYSICS_BUILTIN})
-set(CECE_ENABLE_BOX2D_PHYSICS_DEBUG ${CECE_PHYSICS_BUILTIN_DEBUG})
-
 # Create config file
 configure_file(config.hpp.in config.hpp)
 
@@ -58,7 +54,7 @@ add_subdirectory(program)
 add_subdirectory(plugin)
 
 # Renderer files
-if (CECE_RENDER_ENABLE)
+if (CECE_RENDER)
     add_subdirectory(render)
 endif ()
 
@@ -80,7 +76,7 @@ set(SRCS
     ${SOURCES_SIMULATOR}
 )
 
-if (CECE_RENDER_ENABLE)
+if (CECE_RENDER)
     set(SRCS ${SRCS} ${SOURCES_RENDER})
 endif ()
 
@@ -94,7 +90,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     CXX_STANDARD 11
     CXX_EXTENSIONS Off
     CXX_STANDARD_REQUIRED On
-    WINDOWS_EXPORT_ALL_SYMBOLS On
+    WINDOWS_EXPORT_ALL_SYMBOLS On # TODO: necessary?
 )
 
 if (MINGW)
@@ -120,7 +116,7 @@ generate_export_header(${PROJECT_NAME}
 # ######################################################################### #
 
 # Include OpenGL if rendering is enabled
-if (CECE_RENDER_ENABLE)
+if (CECE_RENDER)
     # OpenGL library is required
     find_package(OpenGL REQUIRED)
     target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
@@ -136,9 +132,9 @@ if (CECE_PHYSICS_BUILTIN)
 endif ()
 
 # Enable time measurement
-if (CECE_PERFORMANCE_MEASUREMENT)
+if (CECE_TIME_MEASUREMENT)
     target_compile_definitions(${PROJECT_NAME}
-        PUBLIC -DCECE_ENABLE_MEASUREMENT
+        PRIVATE -DCECE_TIME_MEASUREMENT
     )
 endif ()
 

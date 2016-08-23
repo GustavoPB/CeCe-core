@@ -30,6 +30,9 @@
 #include <string>
 #include <sstream>
 
+// Box2D
+#include <Box2D/Box2D.h>
+
 // CeCe
 #include "cece/core/Assert.hpp"
 #include "cece/core/UnitIo.hpp"
@@ -39,12 +42,7 @@
 #include "cece/config/Configuration.hpp"
 #include "cece/plugin/Context.hpp"
 #include "cece/simulator/Simulation.hpp"
-
-// Box2D
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
-#  include <Box2D/Box2D.h>
-#  include "cece/simulator/ConverterBox2D.hpp"
-#endif
+#include "cece/simulator/ConverterBox2D.hpp"
 
 /* ************************************************************************ */
 
@@ -57,7 +55,6 @@ namespace {
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
 /**
  * @brief Convert object type into Box2 body type.
  *
@@ -75,7 +72,6 @@ b2BodyType convert(Object::Type type) noexcept
     case Object::Type::Pinned:  return b2_dynamicBody;
     }
 }
-#endif
 
 /* ************************************************************************ */
 
@@ -117,7 +113,6 @@ Object::Object(simulator::Simulation& simulation, String typeName, Type type) no
     , m_id(++s_id)
     , m_type(type)
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     auto& world = getSimulation().getWorld();
 
     b2BodyDef bodyDef;
@@ -140,14 +135,12 @@ Object::Object(simulator::Simulation& simulation, String typeName, Type type) no
 
         m_pinJoint = world.CreateJoint(&jointDef);
     }
-#endif
 }
 
 /* ************************************************************************ */
 
 Object::~Object()
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     auto& world = getSimulation().getWorld();
 
     // Pin the body
@@ -159,116 +152,79 @@ Object::~Object()
 
     Assert(m_body);
     world.DestroyBody(m_body);
-#endif
 }
 
 /* ************************************************************************ */
 
 units::PositionVector Object::getPosition() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     return simulator::ConverterBox2D::getInstance().convertPosition(m_body->GetPosition());
-#else
-    return m_position;
-#endif
 }
 
 /* ************************************************************************ */
 
 units::PositionVector Object::getMassCenterPosition() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     return simulator::ConverterBox2D::getInstance().convertPosition(m_body->GetWorldCenter());
-#else
-    return m_position;
-#endif
 }
 
 /* ************************************************************************ */
 
 units::PositionVector Object::getMassCenterOffset() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     return simulator::ConverterBox2D::getInstance().convertPosition(m_body->GetLocalCenter());
-#else
-    return m_position;
-#endif
 }
 
 /* ************************************************************************ */
 
 units::PositionVector Object::getWorldPosition(units::PositionVector local) const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     return simulator::ConverterBox2D::getInstance().convertPosition(
         m_body->GetWorldPoint(simulator::ConverterBox2D::getInstance().convertPosition(local))
     );
-#else
-    return local;
-#endif
 }
 
 /* ************************************************************************ */
 
 units::Angle Object::getRotation() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     return simulator::ConverterBox2D::getInstance().convertAngle(m_body->GetAngle());
-#else
-    return m_rotation;
-#endif
 }
 
 /* ************************************************************************ */
 
 units::VelocityVector Object::getVelocity() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     return simulator::ConverterBox2D::getInstance().convertLinearVelocity(m_body->GetLinearVelocity());
-#else
-    return m_velocity;
-#endif
 }
 
 /* ************************************************************************ */
 
 units::AngularVelocity Object::getAngularVelocity() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     return simulator::ConverterBox2D::getInstance().convertAngularVelocity(m_body->GetAngularVelocity());
-#else
-    return Zero;
-#endif
 }
 
 /* ************************************************************************ */
 
 units::Mass Object::getMass() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     return simulator::ConverterBox2D::getInstance().convertMass(m_body->GetMass());
-#else
-    return {1};
-#endif
 }
 
 /* ************************************************************************ */
 
 units::Length Object::getMaxTranslation() const noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     return simulator::ConverterBox2D::getInstance().getMaxObjectTranslation();
-#else
-    return units::Length(NAN);
-#endif
 }
 
 /* ************************************************************************ */
@@ -276,76 +232,57 @@ units::Length Object::getMaxTranslation() const noexcept
 void Object::setType(Type type) noexcept
 {
     m_type = type;
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->SetType(convert(type));
-#endif
 }
 
 /* ************************************************************************ */
 
 void Object::setPosition(units::PositionVector pos) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->SetTransform(simulator::ConverterBox2D::getInstance().convertPosition(pos), m_body->GetAngle());
 
     if (m_pinBody)
         m_pinBody->SetTransform(simulator::ConverterBox2D::getInstance().convertPosition(pos), 0);
-#else
-    m_position = std::move(pos);
-#endif
 }
 
 /* ************************************************************************ */
 
 void Object::setRotation(units::Angle angle) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->SetTransform(m_body->GetPosition(), simulator::ConverterBox2D::getInstance().convertAngle(angle));
-#else
-    m_rotation = angle;
-#endif
 }
 
 /* ************************************************************************ */
 
 void Object::setVelocity(units::VelocityVector vel) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->SetLinearVelocity(simulator::ConverterBox2D::getInstance().convertLinearVelocity(vel));
-#else
-    m_velocity = std::move(vel);
-#endif
 }
 
 /* ************************************************************************ */
 
 void Object::setAngularVelocity(units::AngularVelocity vel) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->SetAngularVelocity(simulator::ConverterBox2D::getInstance().convertAngularVelocity(vel));
-#endif
 }
 
 /* ************************************************************************ */
 
 void Object::applyForce(const units::ForceVector& force) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->ApplyForceToCenter(simulator::ConverterBox2D::getInstance().convertForce(force), true);
-#endif
 }
 
 /* ************************************************************************ */
 
 void Object::applyForce(const units::ForceVector& force, const units::PositionVector& offset) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->ApplyForce(
         simulator::ConverterBox2D::getInstance().convertForce(force),
@@ -354,33 +291,26 @@ void Object::applyForce(const units::ForceVector& force, const units::PositionVe
     );
 
     m_force += force;
-#endif
 }
 
 /* ************************************************************************ */
 
 void Object::applyLinearImpulse(const units::ImpulseVector& impulse, const units::PositionVector& offset) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->ApplyLinearImpulse(
         simulator::ConverterBox2D::getInstance().convertLinearImpulse(impulse),
         m_body->GetWorldPoint(simulator::ConverterBox2D::getInstance().convertPosition(offset)),
         true
     );
-#else
-    m_velocity += 1 / getMass() * impulse;
-#endif
 }
 
 /* ************************************************************************ */
 
 void Object::applyAngularImpulse(const units::Impulse& impulse) noexcept
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     Assert(m_body);
     m_body->ApplyAngularImpulse(simulator::ConverterBox2D::getInstance().convertAngularImpulse(impulse), true);
-#endif
 }
 
 /* ************************************************************************ */
@@ -406,10 +336,8 @@ void Object::destroy()
 
 void Object::update(units::Duration dt)
 {
-#ifndef CECE_ENABLE_BOX2D_PHYSICS
     // Calculate new object position
     setPosition(getPosition() + getVelocity() * dt);
-#endif
 
     // Call object programs
     m_programs.call(getSimulation(), *this, dt);
@@ -460,7 +388,7 @@ void Object::update(units::Duration dt)
 
 void Object::configure(const config::Configuration& config, simulator::Simulation& simulation)
 {
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     setVisible(config.get("visible", isVisible()));
     setColor(config.get("color", getColor()));
 #endif
@@ -492,8 +420,6 @@ void Object::configure(const config::Configuration& config, simulator::Simulatio
 
 void Object::initShapes()
 {
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
-
     // Delete old fixtures
     for (b2Fixture* fixture = getBody()->GetFixtureList();
          fixture != nullptr;
@@ -568,12 +494,11 @@ void Object::initShapes()
             m_bodyShapes.push_back(std::move(bodyShape));
         }
     }
-#endif
 }
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Object::draw(const simulator::Visualization&, render::Context& context)
 {
     draw(context);
@@ -582,7 +507,7 @@ void Object::draw(const simulator::Visualization&, render::Context& context)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Object::draw(render::Context& context)
 {
     // Nothing to do
@@ -591,7 +516,7 @@ void Object::draw(render::Context& context)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Object::drawStoreState(const simulator::Visualization&)
 {
     drawStoreState();
@@ -600,7 +525,7 @@ void Object::drawStoreState(const simulator::Visualization&)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Object::drawStoreState()
 {
     // Nothing to do
@@ -609,7 +534,7 @@ void Object::drawStoreState()
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Object::drawSwapState()
 {
     // Nothing to do

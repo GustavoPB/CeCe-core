@@ -42,7 +42,7 @@ namespace config {
 /**
  * @brief If CeCe is built with rendering support.
  */
-#cmakedefine CECE_ENABLE_RENDER
+#cmakedefine CECE_RENDER
 
 /* ************************************************************************ */
 
@@ -50,20 +50,6 @@ namespace config {
  * @brief Enable renderer errors checking.
  */
 #cmakedefine CECE_RENDER_CHECK_ERRORS
-
-/* ************************************************************************ */
-
-/**
- * @brief If Box2D physics is enabled.
- */
-#cmakedefine CECE_ENABLE_BOX2D_PHYSICS
-
-/* ************************************************************************ */
-
-/**
- * @brief If Box2D physics engine debug is enabled.
- */
-#cmakedefine CECE_ENABLE_BOX2D_PHYSICS_DEBUG
 
 /* ************************************************************************ */
 

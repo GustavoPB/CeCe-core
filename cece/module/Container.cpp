@@ -71,7 +71,7 @@ void Container::terminate()
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Container::draw(const simulator::Visualization& visualization, render::Context& context)
 {
     const RenderState& state = m_drawableState.getFront();
@@ -92,7 +92,7 @@ void Container::draw(const simulator::Visualization& visualization, render::Cont
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Container::drawStoreState(const simulator::Visualization& visualization)
 {
     RenderState& state = m_drawableState.getBack();
@@ -109,7 +109,7 @@ void Container::drawStoreState(const simulator::Visualization& visualization)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Container::drawSwapState()
 {
     for (auto& module : *this)
@@ -121,8 +121,7 @@ void Container::drawSwapState()
 
 /* ************************************************************************ */
 
-DynamicArray<ViewPtr<Module>>
-Container::getSortedListAsc() const noexcept
+DynamicArray<ViewPtr<Module>> Container::getSortedListAsc() const noexcept
 {
     DynamicArray<ViewPtr<Module>> modules;
 
@@ -141,8 +140,7 @@ Container::getSortedListAsc() const noexcept
 
 /* ************************************************************************ */
 
-DynamicArray<ViewPtr<Module>>
-Container::getSortedListDesc() const noexcept
+DynamicArray<ViewPtr<Module>> Container::getSortedListDesc() const noexcept
 {
     DynamicArray<ViewPtr<Module>> modules;
 

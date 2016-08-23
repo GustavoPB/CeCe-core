@@ -221,7 +221,7 @@ void Simulation::loadConfig(const config::Configuration& config)
     setTimeStep(config.get<units::Time>("dt"));
     setIterations(config.get("iterations", getIterations()));
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     {
         // Allow to specify visualization parameters in simulation configuration
         auto& visualization = getVisualization();

@@ -108,7 +108,7 @@ void Container::removeDeleted() noexcept
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Container::draw(render::Context& context)
 {
     const RenderState& state = m_drawableState.getFront();
@@ -125,7 +125,7 @@ void Container::draw(render::Context& context)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Container::drawStoreState(const simulator::Visualization& visualization)
 {
     RenderState& state = m_drawableState.getBack();
@@ -146,7 +146,7 @@ void Container::drawStoreState(const simulator::Visualization& visualization)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Container::drawSwapState()
 {
     for (const auto& obj : m_data)

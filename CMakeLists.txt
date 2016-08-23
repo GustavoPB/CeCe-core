@@ -35,13 +35,11 @@ project(cece
 # ######################################################################### #
 
 # Options
-option(CECE_RENDER_ENABLE           "Enable simulation rendering (vizualization support)" On)
+option(CECE_RENDER                  "Enable simulation rendering (vizualization support)" On)
 option(CECE_RENDER_CHECK_ERRORS     "Enable renderer errors checking." Off)
-option(CECE_PHYSICS_BUILTIN         "Enable builtin physics engine (Box2D)" On)
-option(CECE_PHYSICS_BUILTIN_DEBUG   "Enable or disable physics engine debugging" Off)
 option(CECE_THREAD_SAFE             "Enable thread support" Off)
 option(CECE_TESTS_BUILD             "Build simulator part tests (requires GTest)" Off)
-option(CECE_PERFORMANCE_MEASUREMENT "Enable or disable time measurement" Off)
+option(CECE_TIME_MEASUREMENT        "Enable or disable time measurement" Off)
 set(CECE_REAL_TYPE "double" CACHE STRING "Type used for real values")
 set_property(CACHE CECE_REAL_TYPE PROPERTY STRINGS "float" "double" "long double")
 
@@ -58,6 +56,8 @@ endif ()
 
 # Build unit tests
 if (CECE_TESTS_BUILD)
+    enable_testing()
+
     # Init google test submodule
     if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googletest/CMakeLists.txt")
         find_package(Git REQUIRED)
@@ -65,7 +65,7 @@ if (CECE_TESTS_BUILD)
             COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive googletest
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         )
-    endif()
+    endif ()
 
     message(STATUS "Build unit tests")
     set(BUILD_GMOCK Off CACHE BOOL "" FORCE)
@@ -74,43 +74,41 @@ if (CECE_TESTS_BUILD)
     mark_as_advanced(BUILD_GMOCK BUILD_GTEST gtest_build_samples gtest_build_tests gtest_disable_pthreads gtest_force_shared_crt)
     add_subdirectory(googletest)
     target_include_directories(gtest INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/include)
-    enable_testing()
 
     find_program(CCACHE_FOUND ccache)
     if (CCACHE_FOUND)
         set_property(DIRECTORY googletest PROPERTY RULE_LAUNCH_COMPILE ccache)
         set_property(DIRECTORY googletest PROPERTY RULE_LAUNCH_LINK ccache)
-    endif()
+    endif ()
 endif ()
 
-if (CECE_PHYSICS_BUILTIN)
-    # Init google test submodule
-    if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D/CMakeLists.txt")
-        find_package(Git REQUIRED)
-        execute_process(
-            COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive Box2D
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-        )
-    endif()
+# Init google test submodule
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D/CMakeLists.txt")
+    find_package(Git REQUIRED)
+    execute_process(
+        COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive Box2D
+        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endif ()
 
-    set(BOX2D_BUILD_EXAMPLES Off CACHE BOOL "" FORCE)
-    set(BOX2D_BUILD_SHARED Off CACHE BOOL "" FORCE)
-    set(BOX2D_BUILD_STATIC On CACHE BOOL "" FORCE)
-    set(BOX2D_INSTALL Off CACHE BOOL "" FORCE)
-    set(BOX2D_INSTALL_DOC Off CACHE BOOL "" FORCE)
-    mark_as_advanced(FORCE BOX2D_BUILD_EXAMPLES BOX2D_BUILD_SHARED BOX2D_BUILD_STATIC BOX2D_INSTALL BOX2D_INSTALL_DOC)
+# Add Box2D physics library
+set(BOX2D_BUILD_EXAMPLES Off CACHE BOOL "" FORCE)
+set(BOX2D_BUILD_SHARED Off CACHE BOOL "" FORCE)
+set(BOX2D_BUILD_STATIC On CACHE BOOL "" FORCE)
+set(BOX2D_INSTALL Off CACHE BOOL "" FORCE)
+set(BOX2D_INSTALL_DOC Off CACHE BOOL "" FORCE)
+mark_as_advanced(FORCE BOX2D_BUILD_EXAMPLES BOX2D_BUILD_SHARED BOX2D_BUILD_STATIC BOX2D_INSTALL BOX2D_INSTALL_DOC)
 
-    add_subdirectory(Box2D/Box2D)
-    # It will be linked in to the shared library
-    set_target_properties(Box2D PROPERTIES POSITION_INDEPENDENT_CODE On)
-    target_include_directories(Box2D INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D)
-    add_library(Physics ALIAS Box2D)
+add_subdirectory(Box2D/Box2D)
+# It will be linked in to the shared library
+set_target_properties(Box2D PROPERTIES POSITION_INDEPENDENT_CODE On)
+target_include_directories(Box2D INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D)
+add_library(Physics ALIAS Box2D)
 
-    find_program(CCACHE_FOUND ccache)
-    if (CCACHE_FOUND)
-        set_property(DIRECTORY Box2D/Box2D PROPERTY RULE_LAUNCH_COMPILE ccache)
-        set_property(DIRECTORY Box2D/Box2D PROPERTY RULE_LAUNCH_LINK ccache)
-    endif()
+find_program(CCACHE_FOUND ccache)
+if (CCACHE_FOUND)
+    set_property(DIRECTORY Box2D/Box2D PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(DIRECTORY Box2D/Box2D PROPERTY RULE_LAUNCH_LINK ccache)
 endif ()
 
 # ######################################################################### #

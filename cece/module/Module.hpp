@@ -42,7 +42,7 @@
 namespace cece { namespace simulator { class Simulation; } }
 namespace cece { namespace config { class Configuration; } }
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 namespace cece { namespace render { class Context; } }
 namespace cece { namespace simulator { class Visualization; } }
 #endif
@@ -93,7 +93,7 @@ public:
     /// Module update priority type.
     using PriorityType = int;
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /// Z order type.
     using ZOrderType = int;
@@ -145,7 +145,7 @@ public:
     }
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Returns module draw Z order.
@@ -175,7 +175,7 @@ public:
     }
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Set module draw Z order.
@@ -237,7 +237,7 @@ public:
     virtual void terminate();
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Render module.
@@ -297,7 +297,7 @@ private:
     /// Module update priority.
     PriorityType m_priority = 0;
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /// Module Z order.
     ZOrderType m_zOrder = 0;

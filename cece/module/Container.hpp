@@ -34,13 +34,13 @@
 #include "cece/core/Atomic.hpp"
 #include "cece/core/PtrNamedContainer.hpp"
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 #include "cece/render/State.hpp"
 #endif
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 namespace cece { namespace render { class Context; } }
 namespace cece { namespace simulator { class Visualization; } }
 #endif
@@ -88,7 +88,7 @@ public:
     void terminate();
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Render modules sorted by z-order.
@@ -134,7 +134,7 @@ protected:
 // Private Structures
 private:
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     struct RenderState
     {
         /// Modules to render
@@ -145,7 +145,7 @@ private:
 // Private Data Members
 private:
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     /// Render state.
     render::State<RenderState> m_drawableState;
 #endif

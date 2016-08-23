@@ -53,7 +53,7 @@ void Module::loadConfig(const config::Configuration& config)
     // Get module priority
     setPriority(config.get("priority", getPriority()));
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     setZOrder(config.get("z-order", getZOrder()));
 #endif
 }
@@ -65,7 +65,7 @@ void Module::storeConfig(config::Configuration& config) const
     // Store module priority
     config.set("priority", getPriority());
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     config.set("z-order", getZOrder());
 #endif
 }
@@ -101,7 +101,7 @@ void Module::terminate()
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Module::draw(const simulator::Visualization&, render::Context& context)
 {
     // Forward
@@ -111,7 +111,7 @@ void Module::draw(const simulator::Visualization&, render::Context& context)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Module::draw(render::Context& context)
 {
     // Nothing to do
@@ -120,7 +120,7 @@ void Module::draw(render::Context& context)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Module::drawStoreState(const simulator::Visualization&)
 {
     drawStoreState();
@@ -129,7 +129,7 @@ void Module::drawStoreState(const simulator::Visualization&)
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Module::drawStoreState()
 {
     // Nothing to do
@@ -138,7 +138,7 @@ void Module::drawStoreState()
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 void Module::drawSwapState()
 {
     // Nothing to do

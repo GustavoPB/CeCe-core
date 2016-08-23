@@ -23,8 +23,8 @@
 #                                                                           #
 # ######################################################################### #
 
-if (!CECE_RENDER_ENABLE)
-    message(WARNING "Cannot build 'render' without CECE_RENDER_ENABLE")
+if (!CECE_RENDER)
+    message(WARNING "Cannot build 'render' without CECE_RENDER")
 endif ()
 
 # ######################################################################### #

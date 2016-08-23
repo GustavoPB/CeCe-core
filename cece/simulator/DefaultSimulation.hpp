@@ -55,7 +55,7 @@
 #include "cece/program/NamedContainer.hpp"
 #include "cece/simulator/Simulation.hpp"
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 #include "cece/simulator/Visualization.hpp"
 #endif
 
@@ -71,9 +71,7 @@ namespace cece {
     namespace plugin { class Repository; }
 }
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
 class b2World;
-#endif
 
 /* ************************************************************************ */
 
@@ -298,7 +296,7 @@ public:
     }
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Returns visualization
@@ -442,8 +440,6 @@ public:
     units::AccelerationVector getGravity() const noexcept;
 
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
-
     /**
      * @brief Returns physics world.
      *
@@ -472,8 +468,6 @@ public:
      * @return
      */
     units::Time getPhysicsEngineTimeStep() const noexcept;
-
-#endif
 
 
     /**
@@ -694,16 +688,12 @@ public:
     void setGravity(const units::AccelerationVector& gravity) noexcept;
 
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
-
     /**
      * @brief Set physics engine simulation time step.
      *
      * @param dt Time step.
      */
     void setPhysicsEngineTimeStep(units::Time dt) noexcept;
-
-#endif
 
 
 // Public Operations
@@ -754,7 +744,7 @@ public:
     bool reset() override;
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Render simulation.
@@ -828,10 +818,8 @@ private:
     /// Registered object types.
     object::TypeContainer m_objectTypes;
 
-#ifdef CECE_ENABLE_BOX2D_PHYSICS
     /// Box2D world
     UniquePtr<b2World> m_world;
-#endif
 
     /// Simulation objects.
     object::Container m_objects;
@@ -839,12 +827,12 @@ private:
     /// A map of preddefined programs.
     program::NamedContainer m_programs;
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     /// Simulation visualization.
     Visualization m_visualization;
 #endif
 
-#if defined(CECE_ENABLE_RENDER) && defined(CECE_ENABLE_BOX2D_PHYSICS) && defined(CECE_ENABLE_BOX2D_PHYSICS_DEBUG)
+#ifdef CECE_RENDER
     bool m_drawPhysics = false;
 #endif
 

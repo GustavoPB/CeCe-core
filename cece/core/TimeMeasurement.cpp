@@ -42,10 +42,10 @@ static OutStream* g_output = &std::cout;
 
 bool isMeasureTimeEnabled() noexcept
 {
-#ifndef CECE_ENABLE_MEASUREMENT
-    return false;
-#else
+#ifdef CECE_TIME_MEASUREMENT
     return true;
+#else
+    return false;
 #endif
 }
 

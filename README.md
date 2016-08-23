@@ -31,4 +31,4 @@ cmake --build .
 ### Requirements
 
 * C++11 compiler - GCC, Clang, MSVC.
-* [CMake](https://cmake.org) v3.0 or newer.
+* [CMake](https://cmake.org) v3.1 or newer.

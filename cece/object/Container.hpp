@@ -35,13 +35,13 @@
 #include "cece/core/DynamicArray.hpp"
 #include "cece/object/Object.hpp"
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 #include "cece/render/State.hpp"
 #endif
 
 /* ************************************************************************ */
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 namespace core { namespace render { class Context; } }
 #endif
 
@@ -334,7 +334,7 @@ public:
     void removeDeleted() noexcept;
 
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
 
     /**
      * @brief Render objects.
@@ -361,7 +361,7 @@ public:
 // Private Structures
 private:
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     struct RenderState
     {
         /// Objects to render
@@ -378,7 +378,7 @@ private:
     /// List of objects that will be added to the container.
     DynamicArray<Record> m_add;
 
-#ifdef CECE_ENABLE_RENDER
+#ifdef CECE_RENDER
     /// Render state.
     render::State<RenderState> m_drawableState;
 #endif
