@@ -100,6 +100,13 @@ if (MINGW)
     )
 endif ()
 
+# Enable time measurement
+if (CECE_TIME_MEASUREMENT)
+    target_compile_definitions(${PROJECT_NAME}
+        PRIVATE -DCECE_TIME_MEASUREMENT
+    )
+endif ()
+
 # Include directories
 target_include_directories(${PROJECT_NAME}
     PUBLIC
@@ -115,6 +122,8 @@ generate_export_header(${PROJECT_NAME}
 
 # ######################################################################### #
 
+target_link_libraries(${PROJECT_NAME} Box2D)
+
 # Include OpenGL if rendering is enabled
 if (CECE_RENDER)
     # OpenGL library is required
@@ -125,17 +134,6 @@ if (CECE_RENDER)
     if (MINGW)
         target_link_libraries(${PROJECT_NAME} ws2_32)
     endif ()
-endif ()
-
-if (CECE_PHYSICS_BUILTIN)
-    target_link_libraries(${PROJECT_NAME} Physics)
-endif ()
-
-# Enable time measurement
-if (CECE_TIME_MEASUREMENT)
-    target_compile_definitions(${PROJECT_NAME}
-        PRIVATE -DCECE_TIME_MEASUREMENT
-    )
 endif ()
 
 if (UNIX AND NOT APPLE)

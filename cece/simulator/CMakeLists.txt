@@ -36,15 +36,9 @@ set(SRCS
     VisualizationLayer.hpp
     DefaultSimulation.hpp
     DefaultSimulation.cpp
+    ConverterBox2D.hpp
+    ConverterBox2D.cpp
 )
-
-if (CECE_PHYSICS_BUILTIN)
-    # Sources
-    set(SRCS ${SRCS}
-        ConverterBox2D.hpp
-        ConverterBox2D.cpp
-    )
-endif ()
 
 # ######################################################################### #
 

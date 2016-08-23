@@ -74,14 +74,9 @@ set(SRCS
     State.hpp
     Image.hpp
     Image.cpp
+    PhysicsDebugger.hpp
+    PhysicsDebugger.cpp
 )
-
-if (CECE_PHYSICS_BUILTIN_DEBUG)
-    set(SRCS ${SRCS}
-        PhysicsDebugger.hpp
-        PhysicsDebugger.cpp
-    )
-endif ()
 
 # ######################################################################### #
 
