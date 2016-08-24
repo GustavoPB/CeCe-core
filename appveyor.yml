@@ -56,19 +56,12 @@ install:
     - SET PATH=C:\MinGW\bin;%PATH%
 
 before_build:
-    - md build
-    - pushd build
-    - cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=Release -DCECE_TESTS_BUILD=On -DCECE_RENDER=%CECE_RENDER% ..
-    - popd
+    - md build && pushd build && cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=Release -DCECE_TESTS_BUILD=On -DCECE_RENDER=%CECE_RENDER% .. & popd
 
 build_script:
-    - pushd build
-    - cmake --build . --config Release
-    - popd
+    - pushd build && cmake --build . --config Release & popd
 
 test_script:
-    - pushd build
-    - ctest --verbose
-    - popd
+    - pushd build && ctest --verbose & popd
 
 # ######################################################################### #
