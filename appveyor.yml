@@ -30,17 +30,17 @@ version: 0.6.0.{build}
 environment:
     matrix:
         - GENERATOR: Visual Studio 14 2015 Win64
-          CECE_RENDER=On
+          CECE_RENDER: On
         - GENERATOR: Visual Studio 14 2015 Win64
-          CECE_RENDER=Off
+          CECE_RENDER: Off
         - GENERATOR: Visual Studio 14 2015
-          CECE_RENDER=On
+          CECE_RENDER: On
         - GENERATOR: Visual Studio 14 2015
-          CECE_RENDER=Off
+          CECE_RENDER: Off
         - GENERATOR: MinGW Makefiles
-          CECE_RENDER=On
+          CECE_RENDER: On
         - GENERATOR: MinGW Makefiles
-          CECE_RENDER=Off
+          CECE_RENDER: Off
 
 matrix:
     allow_failures:
