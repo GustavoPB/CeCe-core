@@ -29,9 +29,11 @@
 // C++
 #include <cstdarg>
 #include <utility>
+#include <iostream>
 
 // CeCe
 #include "cece/core/DynamicArray.hpp"
+#include "cece/core/StringStream.hpp"
 
 /* ************************************************************************ */
 
@@ -96,8 +98,12 @@ void DataExportCsv::writeRecordImpl(int count, const char* format, ...)
             break;
 
         case DATA_EXPORT_FORMAT_DOUBLE:
-            values[i] = toString(va_arg(args, double));
+        {
+            OutStringStream oss;
+            oss << std::scientific << va_arg(args, double);
+            values[i] = oss.str();
             break;
+        }
 
         case DATA_EXPORT_FORMAT_STRING:
             values[i] = va_arg(args, const char*);
