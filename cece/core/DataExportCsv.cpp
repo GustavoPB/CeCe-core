@@ -43,7 +43,7 @@ inline namespace core {
 /* ************************************************************************ */
 
 DataExportCsv::DataExportCsv(FilePath path)
-    : m_file(path.replaceExtension(".csv"))
+    : m_file(path.append(".csv"))
 {
     // Nothing to do
 }

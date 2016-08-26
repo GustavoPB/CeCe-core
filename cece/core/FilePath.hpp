@@ -292,6 +292,20 @@ public:
 
 
     /**
+     * @brief Append string to the path.
+     *
+     * @param  str String to append.
+     *
+     * @return this
+     */
+    FilePath& append(const String& str)
+    {
+        m_path.append(str);
+        return *this;
+    }
+
+
+    /**
      * @brief Replace path extension.
      *
      * @param  ext New extension.
