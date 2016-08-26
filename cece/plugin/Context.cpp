@@ -125,6 +125,8 @@ ViewPtr<const Api> Context::importPlugin(StringView name)
     if (it != m_plugins.end())
         return it->second;
 
+    Log::info("Importing plugin '", name, "'...");
+
     // Load plugin
     auto api = getRepository().getManager().getApi(name);
 
