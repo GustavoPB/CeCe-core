@@ -30,6 +30,7 @@
 // CeCe
 #include "cece/core/IteratorRange.hpp"
 #include "cece/core/Map.hpp"
+#include "cece/core/Real.hpp"
 #include "cece/core/StringView.hpp"
 #include "cece/core/Exception.hpp"
 #include "cece/core/Parser.hpp"
@@ -75,7 +76,7 @@ DEFINE_EXPRESSION_EXCEPTION(UnknownFunctionException, "Unknown function name");
  *
  * @return Result value.
  */
-float parseExpressionRef(IteratorRange<const char*>& range, const Parameters& parameters = Parameters{});
+RealType parseExpressionRef(IteratorRange<const char*>& range, const Parameters& parameters = Parameters{});
 
 /* ************************************************************************ */
 
@@ -87,7 +88,7 @@ float parseExpressionRef(IteratorRange<const char*>& range, const Parameters& pa
  *
  * @return Result value.
  */
-inline float parseExpression(IteratorRange<const char*> range, const Parameters& parameters = Parameters{})
+inline RealType parseExpression(IteratorRange<const char*> range, const Parameters& parameters = Parameters{})
 {
     return parseExpressionRef(range, parameters);
 }
@@ -102,7 +103,7 @@ inline float parseExpression(IteratorRange<const char*> range, const Parameters&
  *
  * @return Result value.
  */
-inline float parseExpression(const StringView& expression, const Parameters& parameters = Parameters{})
+inline RealType parseExpression(const StringView& expression, const Parameters& parameters = Parameters{})
 {
     return parseExpression(makeRange(
         expression.getData(), expression.getData() + expression.getLength()

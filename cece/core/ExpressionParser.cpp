@@ -33,6 +33,7 @@
 
 // CeCe
 #include "cece/core/Assert.hpp"
+#include "cece/core/Real.hpp"
 #include "cece/core/constants.hpp"
 #include "cece/core/Tokenizer.hpp"
 #include "cece/core/UnitIo.hpp"
@@ -287,14 +288,14 @@ private:
         return local;
     }
 
-    float signum(float source)
+    RealType signum(RealType source)
     {
-        return (0 < source) - (source < 0);
+        return static_cast<RealType>((0 < source) - (source < 0));
     }
 
-    float add()
+    RealType add()
     {
-        float value = multiply();
+        RealType value = multiply();
         while (!iterator.isEmpty())
         {
             if (iterator.front() == '+')
@@ -316,9 +317,9 @@ private:
         return value;
     }
 
-    float multiply()
+    RealType multiply()
     {
-        float value = power();
+        RealType value = power();
         while (!iterator.isEmpty())
         {
             if (iterator.front() == '*')
@@ -340,16 +341,16 @@ private:
         return value;
     }
 
-    float power()
+    RealType power()
     {
-        float value = parenthesis();
+        RealType value = parenthesis();
         while (!iterator.isEmpty())
         {
             if (iterator.front() == '^')
             {
                 iterator.advanceBegin();
                 skipWhitespace();
-                float exp = parenthesis();
+                RealType exp = parenthesis();
                 if (value == 0 && exp == 0)
                     return NAN;
                 else
@@ -362,13 +363,13 @@ private:
         return value;
     }
 
-    float parenthesis()
+    RealType parenthesis()
     {
         if (iterator.front() == '(')
         {
             iterator.advanceBegin();
             skipWhitespace();
-            float value = add();
+            RealType value = add();
             if (iterator.front() == ')')
             {
                 iterator.advanceBegin();
@@ -382,10 +383,10 @@ private:
             return constant();
     }
 
-    float constant()
+    RealType constant()
     {
         char* end;
-        float value = strtof(iterator.begin(), &end);
+        RealType value = strtof(iterator.begin(), &end);
         if (iterator.begin() != end)
         {
             iterator = makeRange<const char*>(end, iterator.end());
@@ -393,7 +394,7 @@ private:
             return value;
         }
 
-        float coeff = 1;
+        RealType coeff = 1;
 
         // Unary minus
         if (iterator.front() == '-')
@@ -423,7 +424,7 @@ private:
         return coeff * units::parse(parameters.get(local));
     }
 
-    float function(String local)
+    RealType function(String local)
     {
         if (iterator.front() != '(')
             throw UnknownConstantException();
@@ -468,7 +469,7 @@ public:
         // Nothing to do
     }
 
-    float parse()
+    RealType parse()
     {
         skipWhitespace();
         if (iterator.isEmpty())
@@ -479,7 +480,7 @@ public:
 
 /* ************************************************************************ */
 
-float parseExpressionRef(IteratorRange<const char*>& range, const Parameters& parameters)
+RealType parseExpressionRef(IteratorRange<const char*>& range, const Parameters& parameters)
 {
     return ExpressionParser(range, parameters).parse();
 }
