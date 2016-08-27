@@ -27,6 +27,11 @@
 
 /* ************************************************************************ */
 
+// C++
+#include <cstddef>
+
+/* ************************************************************************ */
+
 namespace cece {
 namespace render {
 
@@ -55,7 +60,7 @@ public:
     /**
      * @brief Buffer size type.
      */
-    using SizeType = unsigned int;
+    using SizeType = std::size_t;
 
 
 // Public Ctors & Dtors

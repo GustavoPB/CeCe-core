@@ -63,14 +63,17 @@ StaticArray<Vertex, VERTEX_COUNT> generateVertices()
 {
     StaticArray<Vertex, VERTEX_COUNT> res;
 
-    constexpr float step = 2 * constants::PI / PARTS;
+    constexpr RealType step = 2 * constants::PI / PARTS;
 
     res[0] = Vertex{0.f, 0.f};
 
     for (unsigned i = 1; i < VERTEX_COUNT; ++i)
     {
-        const float angle = step * i;
-        res[i] = Vertex{std::cos(angle), std::sin(angle)};
+        const RealType angle = step * i;
+        res[i] = Vertex{
+            static_cast<float>(std::cos(angle)), 
+            static_cast<float>(std::sin(angle))
+        };
     }
 
     return res;

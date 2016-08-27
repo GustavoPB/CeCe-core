@@ -70,7 +70,7 @@ void Lines::draw(Context& context, const Color& color) noexcept
     context.setVertexFormat(&g_vformat);
 
     // Draw lines
-    context.draw(render::PrimitiveType::Lines, m_count);
+    context.draw(render::PrimitiveType::Lines, static_cast<unsigned int>(m_count));
 
     context.setVertexFormat(nullptr);
     context.setVertexBuffer(nullptr);

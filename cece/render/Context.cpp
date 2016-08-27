@@ -248,7 +248,11 @@ void Context::setView(int width, int height) noexcept
     glScalef(scale, scale, scale);
 
     // Move camera
-    glTranslatef(m_camera.getPosition().getX().value(), m_camera.getPosition().getY().value(), 0);
+    glTranslatef(
+        static_cast<float>(m_camera.getPosition().getX().value()), 
+        static_cast<float>(m_camera.getPosition().getY().value()), 
+        0
+    );
 
     // Rotate camera
     //glRotatef(m_camera.getRotation(), 0, 1, 0);
@@ -395,21 +399,34 @@ void Context::matrixIdentity() noexcept
 
 void Context::matrixTranslate(const units::PositionVector& pos) noexcept
 {
-    gl(glTranslatef(pos.getX().value(), pos.getY().value(), 0));
+    gl(glTranslatef(
+        static_cast<float>(pos.getX().value()), 
+        static_cast<float>(pos.getY().value()), 
+        0.0f
+    ));
 }
 
 /* ************************************************************************ */
 
 void Context::matrixScale(const units::ScaleVector& scale) noexcept
 {
-    gl(glScalef(scale.getX(), scale.getY(), 1));
+    gl(glScalef(
+        static_cast<float>(scale.getX()), 
+        static_cast<float>(scale.getY()), 
+        1.0f
+    ));
 }
 
 /* ************************************************************************ */
 
 void Context::matrixRotate(units::Angle angle) noexcept
 {
-    gl(glRotatef(units::rad2deg(angle.value()), 0.f, 0.f, 1.f));
+    gl(glRotatef(
+        static_cast<float>(units::rad2deg(angle.value())), 
+        0.f, 
+        0.f, 
+        1.f
+    ));
 }
 
 /* ************************************************************************ */
@@ -578,7 +595,7 @@ void Context::setProgramParam(Program::UniformId id, double value) noexcept
         glUniform1f = (PFNGLUNIFORM1FPROC)wglGetProcAddress("glUniform1f");
 #endif
 
-    gl(glUniform1f(id, value));
+    gl(glUniform1f(id, static_cast<float>(value)));
 }
 
 /* ************************************************************************ */
@@ -590,7 +607,7 @@ void Context::setProgramParam(Program::UniformId id, long double value) noexcept
         glUniform1f = (PFNGLUNIFORM1FPROC)wglGetProcAddress("glUniform1f");
 #endif
 
-    gl(glUniform1f(id, value));
+    gl(glUniform1f(id, static_cast<float>(value)));
 }
 
 /* ************************************************************************ */
