@@ -91,6 +91,11 @@ String FilePath::getFilename() const noexcept
 
     auto pos = m_path.find_last_of(SEPARATOR);
 
+#ifdef _WIN32
+    if (pos == String::npos)
+        pos = m_path.find_last_of('\\');
+#endif
+
     if (pos == String::npos)
         return m_path;
 
@@ -114,6 +119,12 @@ String FilePath::getExtension() const noexcept
 FilePath FilePath::getParentPath() const noexcept
 {
     auto pos = m_path.find_last_of(SEPARATOR);
+
+#ifdef _WIN32
+    if (pos == String::npos)
+        pos = m_path.find_last_of('\\');
+#endif
+
     return pos == String::npos
         ? FilePath{}
         : FilePath{m_path.substr(0, pos)}
@@ -217,11 +228,12 @@ FilePath tempDirectory()
     FilePath p;
     for (int i = 0; i < 4; ++i)
     {
-        wchar_t* env = _wgetenv(envList[i]);
+        wchar_t* buffer;
+        size_t size;
 
-        if (env)
+        if (_wdupenv_s(&buffer, &size, envList[i]) == 0)
         {
-            p = fromWide(env);
+            p = fromWide(buffer);
             if (i >= 2)
                 p /= "Temp";
 
@@ -271,6 +283,7 @@ DynamicArray<FilePath> openDirectory(const FilePath& dir)
 #ifdef _WIN32
     WIN32_FIND_DATAW ffd;
     auto str = toWide(dir.c_str());
+    str.append(L"\\*");
     HANDLE hFind = FindFirstFileW(str.c_str(), &ffd);
     if (hFind == INVALID_HANDLE_VALUE)
         return {};
