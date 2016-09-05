@@ -69,8 +69,15 @@ public:
     explicit CsvFile(FilePath path);
 
 
-// Public Accessors
+// Public Accessors & Mutators
 public:
+
+
+    /**
+     * @brief Returns if file is open.
+     * @return
+     */
+    bool isOpen() const noexcept;
 
 
     /**
@@ -82,10 +89,6 @@ public:
     {
         return m_path;
     }
-
-
-// Public Mutators
-public:
 
 
     /**

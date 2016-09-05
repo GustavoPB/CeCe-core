@@ -43,6 +43,13 @@ CsvFile::CsvFile(FilePath path)
 
 /* ************************************************************************ */
 
+bool CsvFile::isOpen() const noexcept
+{
+    return m_file.is_open();
+}
+
+/* ************************************************************************ */
+
 void CsvFile::open()
 {
     open(std::move(m_path));
