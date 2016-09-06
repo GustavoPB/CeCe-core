@@ -10,9 +10,9 @@ This repository contains only core library, for whole project see [https://githu
 
 ## Building from source
 
-Building from source code is done by CMake (see Requirements).
+Building from source code is done by CMake (see Requirements). Required submodules (Box2D, googletest) are cloned by CMake in case they are needed.
 
-### Linux & OSX
+### Linux & macOS
 
 ```bash
 $ mkdir build && cd build
