@@ -145,6 +145,7 @@ endif ()
 if (CECE_TESTS_BUILD)
     add_executable(${PROJECT_NAME}_test
         ${SOURCES_CORE_TEST}
+        ${SOURCES_RENDER_TEST}
     )
 
     # Properties

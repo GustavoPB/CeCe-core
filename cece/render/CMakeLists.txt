@@ -78,10 +78,16 @@ set(SRCS
     PhysicsDebugger.cpp
 )
 
+set(SRCS_TEST
+    ColorTest.cpp
+)
+
 # ######################################################################### #
 
 dir_pretend(SOURCES render/ ${SRCS})
+dir_pretend(SOURCES_TEST render/test/ ${SRCS_TEST})
 
 set(SOURCES_RENDER ${SOURCES} PARENT_SCOPE)
+set(SOURCES_RENDER_TEST ${SOURCES_TEST} PARENT_SCOPE)
 
 # ######################################################################### #
