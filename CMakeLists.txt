@@ -59,10 +59,10 @@ if (CECE_TESTS_BUILD)
     enable_testing()
 
     # Init google test submodule
-    if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/googletest/CMakeLists.txt")
+    if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest/CMakeLists.txt")
         find_package(Git REQUIRED)
         execute_process(
-            COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive googletest
+            COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive vendor/googletest
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
         )
     endif ()
@@ -72,21 +72,21 @@ if (CECE_TESTS_BUILD)
     set(BUILD_GTEST On CACHE BOOL "" FORCE)
     set(gtest_force_shared_crt On CACHE BOOL "" FORCE)
     mark_as_advanced(BUILD_GMOCK BUILD_GTEST gtest_build_samples gtest_build_tests gtest_disable_pthreads gtest_force_shared_crt)
-    add_subdirectory(googletest)
-    target_include_directories(gtest INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/googletest/include)
+    add_subdirectory(vendor/googletest)
+    target_include_directories(gtest INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/vendor/googletest/include)
 
     find_program(CCACHE_FOUND ccache)
     if (CCACHE_FOUND)
-        set_property(DIRECTORY googletest PROPERTY RULE_LAUNCH_COMPILE ccache)
-        set_property(DIRECTORY googletest PROPERTY RULE_LAUNCH_LINK ccache)
+        set_property(DIRECTORY vendor/googletest PROPERTY RULE_LAUNCH_COMPILE ccache)
+        set_property(DIRECTORY vendor/googletest PROPERTY RULE_LAUNCH_LINK ccache)
     endif ()
 endif ()
 
 # Init google test submodule
-if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D/CMakeLists.txt")
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/vendor/Box2D/Box2D/CMakeLists.txt")
     find_package(Git REQUIRED)
     execute_process(
-        COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive Box2D
+        COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive vendor/Box2D
         WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endif ()
@@ -99,15 +99,15 @@ set(BOX2D_INSTALL Off CACHE BOOL "" FORCE)
 set(BOX2D_INSTALL_DOC Off CACHE BOOL "" FORCE)
 mark_as_advanced(FORCE BOX2D_BUILD_EXAMPLES BOX2D_BUILD_SHARED BOX2D_BUILD_STATIC BOX2D_INSTALL BOX2D_INSTALL_DOC)
 
-add_subdirectory(Box2D/Box2D)
+add_subdirectory(vendor/Box2D/Box2D)
 # It will be linked in to the shared library
 set_target_properties(Box2D PROPERTIES POSITION_INDEPENDENT_CODE On)
-target_include_directories(Box2D INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/Box2D/Box2D)
+target_include_directories(Box2D INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/vendor/Box2D/Box2D)
 
 find_program(CCACHE_FOUND ccache)
 if (CCACHE_FOUND)
-    set_property(DIRECTORY Box2D/Box2D PROPERTY RULE_LAUNCH_COMPILE ccache)
-    set_property(DIRECTORY Box2D/Box2D PROPERTY RULE_LAUNCH_LINK ccache)
+    set_property(DIRECTORY vendor/Box2D/Box2D PROPERTY RULE_LAUNCH_COMPILE ccache)
+    set_property(DIRECTORY vendor/Box2D/Box2D PROPERTY RULE_LAUNCH_LINK ccache)
 endif ()
 
 # ######################################################################### #
