@@ -74,7 +74,7 @@ Program::UniformId Program::getUniformId(const char* name) const noexcept
         glGetUniformLocation = (PFNGLGETUNIFORMLOCATIONPROC)wglGetProcAddress("glGetUniformLocation");
 #endif
 
-    Assert(getId());
+    CECE_ASSERT(getId());
     Program::UniformId id;
     gl(id = glGetUniformLocation(getId(), name));
     return id;
@@ -90,7 +90,7 @@ void Program::init(const Shader& vs, const Shader& fs)
 #endif
 
     m_id = glCreateProgram();
-    Assert(m_id);
+    CECE_ASSERT(m_id);
 
 #ifdef _WIN32
     if (!glAttachShader)

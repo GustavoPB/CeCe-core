@@ -56,7 +56,7 @@ Buffer::Buffer(Context& context)
 
     // Generate buffer
     gl(glGenBuffers(1, &m_id));
-    Assert(m_id != 0);
+    CECE_ASSERT(m_id != 0);
 }
 
 /* ************************************************************************ */
@@ -77,7 +77,7 @@ Buffer::~Buffer()
         glDeleteBuffers = (PFNGLDELETEBUFFERSPROC) wglGetProcAddress("glDeleteBuffers");
 #endif
 
-    Assert(isInitialized());
+    CECE_ASSERT(isInitialized());
     gl(glDeleteBuffers(1, &m_id));
 }
 
@@ -85,7 +85,7 @@ Buffer::~Buffer()
 
 void Buffer::resize(SizeType size, const void* data)
 {
-    Assert(isInitialized());
+    CECE_ASSERT(isInitialized());
 
 #ifdef _WIN32
     if (!glBindBuffer)

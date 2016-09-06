@@ -65,8 +65,8 @@ bool is_power_of_two(std::size_t x) noexcept
 
 void* allocate_aligned_memory(std::size_t align, std::size_t size)
 {
-    Assert(align >= sizeof(void*));
-    Assert(is_power_of_two(align));
+    CECE_ASSERT(align >= sizeof(void*));
+    CECE_ASSERT(is_power_of_two(align));
 
     if (size == 0)
         return nullptr;

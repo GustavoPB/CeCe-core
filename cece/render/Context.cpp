@@ -209,7 +209,7 @@ void Context::setClearColor(const Color& color) noexcept
 
 void Context::init(const render::Color& color) noexcept
 {
-    Assert(!isInitialized());
+    CECE_ASSERT(!isInitialized());
 
     // Clear color
     setClearColor(color);
@@ -302,7 +302,7 @@ void Context::disableStencilBuffer() noexcept
 
 void Context::frameBegin(int width, int height) noexcept
 {
-    Assert(isInitialized());
+    CECE_ASSERT(isInitialized());
 
     // Clear
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -314,7 +314,7 @@ void Context::frameBegin(int width, int height) noexcept
 
 void Context::frameEnd() noexcept
 {
-    Assert(isInitialized());
+    CECE_ASSERT(isInitialized());
     glFlush();
 }
 

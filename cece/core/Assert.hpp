@@ -38,9 +38,17 @@ inline namespace core {
 /* ************************************************************************ */
 
 /**
- * @brief Simulator assert.
+ * @brief CeCe assert.
  */
-#define Assert(expr) assert(expr)
+#define CECE_ASSERT(expr) assert(expr)
+
+/* ************************************************************************ */
+
+/**
+ * @brief CeCe assert.
+ * @deprecated
+ */
+#define Assert(expr) CECE_ASSERT(expr)
 
 /* ************************************************************************ */
 

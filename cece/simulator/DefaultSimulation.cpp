@@ -393,7 +393,7 @@ void DefaultSimulation::storeConfig(config::Configuration& config) const
 
 void DefaultSimulation::initialize(AtomicBool& flag)
 {
-    Assert(!isInitialized());
+    CECE_ASSERT(!isInitialized());
 
     // Add pending objects
     m_objects.addPending();
@@ -514,7 +514,7 @@ void DefaultSimulation::terminate()
     const auto& plugins = m_pluginContext.getImported();
     for (auto it = plugins.rbegin(); it != plugins.rend(); ++it)
     {
-        Assert(it->second);
+        CECE_ASSERT(it->second);
         it->second->finalizeSimulation(*this);
     }
 }
@@ -566,7 +566,7 @@ void DefaultSimulation::updateObjects()
     {
         auto obj = m_objects[i];
 
-        Assert(obj);
+        CECE_ASSERT(obj);
         obj->update(getTimeStep());
     }
 }

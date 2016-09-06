@@ -111,7 +111,7 @@ ViewPtr<Api> Manager::load(StringView name)
 
     // Load internal
     auto api = loadInternal(String(name)).getApi();
-    Assert(api);
+    CECE_ASSERT(api);
 
     // Load dependencies
     for (const auto& plugin : api->requiredPlugins())
@@ -243,7 +243,7 @@ void Manager::unloadPlugins()
     for (auto i = m_unloadOrderRev.rbegin(); i != m_unloadOrderRev.rend(); ++i)
     {
         auto it = m_loaded.find(*i);
-        Assert(it != m_loaded.end());
+        CECE_ASSERT(it != m_loaded.end());
 
         Log::debug("Unloading plugin '", *i, "'...");
 

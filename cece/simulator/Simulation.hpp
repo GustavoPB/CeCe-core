@@ -282,7 +282,7 @@ public:
         if (!module)
             return nullptr;
 
-        Assert(dynamic_cast<ModuleType*>(module.get()));
+        CECE_ASSERT(dynamic_cast<ModuleType*>(module.get()));
         return static_cast<ModuleType*>(module.get());
     }
 
@@ -314,7 +314,7 @@ public:
     ViewPtr<ModuleType> requireModule(StringView name) const
     {
         auto module = requireModule(name);
-        Assert(dynamic_cast<ModuleType*>(module.get()));
+        CECE_ASSERT(dynamic_cast<ModuleType*>(module.get()));
         return static_cast<ModuleType*>(module.get());
     }
 

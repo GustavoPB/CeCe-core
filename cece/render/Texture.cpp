@@ -67,7 +67,7 @@ Texture::Texture(Context& context, bool filter)
 {
     // Generate texture
     gl(glGenTextures(1, &m_id));
-    Assert(m_id != 0);
+    CECE_ASSERT(m_id != 0);
 
     gl(glBindTexture(GL_TEXTURE_2D, m_id));
     gl(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE));
@@ -98,7 +98,7 @@ Texture::Texture(Context& context, Size size, const Color& color, bool filter)
 
 Texture::~Texture()
 {
-    Assert(isInitialized());
+    CECE_ASSERT(isInitialized());
     gl(glDeleteTextures(1, &m_id));
 }
 
@@ -119,7 +119,7 @@ void Texture::clear(const Color& color)
 
 void Texture::resize(Size size, const Color& color)
 {
-    Assert(isInitialized());
+    CECE_ASSERT(isInitialized());
 
     m_size = std::move(size);
 
@@ -148,7 +148,7 @@ void Texture::update(const Color* colors)
 
 void Texture::create(Size size, const Color* colors)
 {
-    Assert(isInitialized());
+    CECE_ASSERT(isInitialized());
 
     m_size = std::move(size);
 
@@ -163,7 +163,7 @@ void Texture::create(Size size, const Color* colors)
 
 void Texture::createGray(Size size, const unsigned char* colors)
 {
-    Assert(isInitialized());
+    CECE_ASSERT(isInitialized());
 
     m_size = std::move(size);
 

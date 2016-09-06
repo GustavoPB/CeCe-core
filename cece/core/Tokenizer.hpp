@@ -320,7 +320,7 @@ protected:
     void fetchToken()
     {
         // Trying to fetch token by invalid iterator
-        Assert(m_tokenizer != nullptr);
+        CECE_ASSERT(m_tokenizer != nullptr);
 
         // Nothing to read
         if (m_tokenizer->isEof())

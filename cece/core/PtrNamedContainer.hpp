@@ -217,7 +217,7 @@ public:
         if (!ptr)
             return nullptr;
 
-        Assert(dynamic_cast<T2*>(ptr.get()));
+        CECE_ASSERT(dynamic_cast<T2*>(ptr.get()));
         return static_cast<T2*>(ptr.get());
     }
 

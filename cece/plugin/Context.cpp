@@ -69,7 +69,7 @@ DynamicArray<String> getPluginNames(StringView name, const Repository& repo, Rec
     for (const auto& record : repo.getRecords())
     {
         const auto* mgr = fn(record.second);
-        Assert(mgr);
+        CECE_ASSERT(mgr);
 
         if (mgr->exists(name))
             names.push_back(String(manager.getName(record.first)));
@@ -189,7 +189,7 @@ UniquePtr<simulator::Simulation> Context::createSimulation(const FilePath& filep
         {
             // Find loader by extension
             auto loader = factoryManager->createLoader(ext);
-            Assert(loader);
+            CECE_ASSERT(loader);
 
             // Create a simulation
             return loader->fromFile(getRepository(), filepath, parameters);
@@ -214,7 +214,7 @@ UniquePtr<simulator::Simulation> Context::createSimulation(StringView type, Stri
         {
             // Find loader
             auto loader = factoryManager->createLoader(type);
-            Assert(loader);
+            CECE_ASSERT(loader);
 
             // Create a simulation
             return loader->fromSource(getRepository(), String(source));
@@ -239,7 +239,7 @@ UniquePtr<simulator::Simulation> Context::createSimulation(StringView type, Stri
         {
             // Find loader
             auto loader = factoryManager->createLoader(type);
-            Assert(loader);
+            CECE_ASSERT(loader);
 
             // Create a simulation
             return loader->fromSource(getRepository(), String(source), filepath);

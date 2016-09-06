@@ -559,7 +559,7 @@ public:
     template<typename T>
     T* cast() noexcept
     {
-        Assert(dynamic_cast<T*>(this));
+        CECE_ASSERT(dynamic_cast<T*>(this));
         return static_cast<T*>(this);
     }
 
@@ -572,7 +572,7 @@ public:
     template<typename T>
     const T* cast() const noexcept
     {
-        Assert(dynamic_cast<const T*>(this));
+        CECE_ASSERT(dynamic_cast<const T*>(this));
         return static_cast<const T*>(this);
     }
 

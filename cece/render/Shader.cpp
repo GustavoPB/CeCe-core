@@ -79,7 +79,7 @@ void Shader::init(Type type, const char* source, unsigned length)
     else
         m_id = 0;
 
-    Assert(m_id);
+    CECE_ASSERT(m_id);
 
 #ifdef _WIN32
     if (!glShaderSource)

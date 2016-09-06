@@ -86,9 +86,9 @@ int convertHex(char c)
  */
 int parseHex(const char* str)
 {
-    Assert(str);
-    Assert(*str);
-    Assert(*(str + 1));
+    CECE_ASSERT(str);
+    CECE_ASSERT(*str);
+    CECE_ASSERT(*(str + 1));
 
     return
         16 * convertHex(*str) +

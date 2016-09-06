@@ -155,7 +155,7 @@ public:
     {
         TokenType token{ExpressionTokenCode::Identifier};
 
-        Assert(isIdentifierBegin());
+        CECE_ASSERT(isIdentifierBegin());
 
         token.value.push_back(value());
         next();

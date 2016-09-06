@@ -57,7 +57,7 @@ void Simulator::start()
 
 bool Simulator::update()
 {
-    Assert(m_simulation);
+    CECE_ASSERT(m_simulation);
     return m_simulation->update();
 }
 
@@ -72,7 +72,7 @@ void Simulator::draw(unsigned int width, unsigned int height)
     // Start frame
     m_renderContext.frameBegin(width, height);
 
-    Assert(m_simulation);
+    CECE_ASSERT(m_simulation);
     m_simulation->draw(m_renderContext);
 
     m_renderContext.frameEnd();

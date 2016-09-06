@@ -542,7 +542,7 @@ public:
      */
     T& operator[](unsigned pos) noexcept
     {
-        Assert(pos < SIZE);
+        CECE_ASSERT(pos < SIZE);
         return (&m_x)[pos];
     }
 
@@ -556,7 +556,7 @@ public:
      */
     const T& operator[](unsigned pos) const noexcept
     {
-        Assert(pos < SIZE);
+        CECE_ASSERT(pos < SIZE);
         return (&m_x)[pos];
     }
 
@@ -1067,7 +1067,7 @@ public:
      */
     T& operator[](unsigned pos) noexcept
     {
-        Assert(pos < SIZE);
+        CECE_ASSERT(pos < SIZE);
         return (&m_x)[pos];
     }
 
@@ -1081,7 +1081,7 @@ public:
      */
     const T& operator[](unsigned pos) const noexcept
     {
-        Assert(pos < SIZE);
+        CECE_ASSERT(pos < SIZE);
         return (&m_x)[pos];
     }
 

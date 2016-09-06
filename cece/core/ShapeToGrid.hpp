@@ -397,7 +397,7 @@ void mapShapeToGrid(FnIn fnIn, FnOut fnOut, const ShapeEdges& shape, const Vecto
                 j = i;
             }
 
-            Assert(nodes.size() % 2 == 0);
+            CECE_ASSERT(nodes.size() % 2 == 0);
 
             // Sort the nodes
             std::sort(nodes.begin(), nodes.end());
