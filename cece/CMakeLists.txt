@@ -130,10 +130,6 @@ if (CECE_RENDER)
     find_package(OpenGL REQUIRED)
     target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
     target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
-
-    if (MINGW)
-        target_link_libraries(${PROJECT_NAME} ws2_32)
-    endif ()
 endif ()
 
 if (UNIX AND NOT APPLE)
