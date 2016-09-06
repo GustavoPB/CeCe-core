@@ -26,24 +26,8 @@
 // Declaration
 #include "cece/render/Color.hpp"
 
-// C++
-#include <cstdlib>
-
-// Unix
-#if defined(__unix__)
-#include <arpa/inet.h>
-#elif defined(__MINGW32__) || defined(__MINGW64__)
-#include <winsock.h>
-// Everyone likes WINAPI macros...
-#undef TRANSPARENT
-#elif defined(_MSC_VER)
-#include <Winsock2.h>
-#undef TRANSPARENT
-// Everyone likes WINAPI macros...
-#pragma comment(lib, "Ws2_32.lib")
-#endif
-
 // CeCe
+#include "cece/core/Assert.hpp"
 #include "cece/core/String.hpp"
 #include "cece/core/Map.hpp"
 #include "cece/core/Exception.hpp"
@@ -74,6 +58,46 @@ const Map<String, render::Color> g_colors{{
 
 /* ************************************************************************ */
 
+/**
+ * Convert hex character to number.
+ * @param  c Hex character.
+ * @return Hex number.
+ */
+int convertHex(char c)
+{
+    if (c >= '0' && c <= '9')
+        return c - '0';
+
+    if (c >= 'A' && c <= 'F')
+        return 10 + c - 'A';
+
+    if (c >= 'a' && c <= 'f')
+        return 10 + c - 'a';
+
+    throw InvalidArgumentException("Invalid HEX character");
+}
+
+/* ************************************************************************ */
+
+/**
+ * Parse 2 first characters from string.
+ * @param  str Source string.
+ * @return Parsed number.
+ */
+int parseHex(const char* str)
+{
+    Assert(str);
+    Assert(*str);
+    Assert(*(str + 1));
+
+    return
+        16 * convertHex(*str) +
+        convertHex(*(str + 1));
+    ;
+}
+
+/* ************************************************************************ */
+
 }
 
 /* ************************************************************************ */
@@ -97,19 +121,17 @@ InStream& operator>>(InStream& is, Color& color)
     if (str[0] != '#')
         throw InvalidArgumentException("Invalid color value");
 
-    // Parse hexadecimal value
-    uint32_t value = htonl(std::strtoul(str.c_str() + 1, nullptr, 16));
-    const uint8_t* bytes = reinterpret_cast<uint8_t*>(&value);
+    // Extract components
+    const int red   = parseHex(str.c_str() + 1);
+    const int green = parseHex(str.c_str() + 3);
+    const int blue  = parseHex(str.c_str() + 5);
+    int alpha = 255;
 
-    // Alpha value
-    if (bytes[0] > 0)
-    {
-        color = Color::fromUchar(bytes[0], bytes[1], bytes[2], bytes[3]);
-    }
-    else
-    {
-        color = Color::fromUchar(bytes[1], bytes[2], bytes[3]);
-    }
+    if (str.size() >= 9)
+        alpha = parseHex(str.c_str() + 7);
+
+    // Create color
+    color = Color::fromUchar(red, green, blue, alpha);
 
     return is;
 }
@@ -125,14 +147,18 @@ OutStream& operator<<(OutStream& os, const Color& color) noexcept
             return os << p.first;
     }
 
-    const uint8_t bytes[4] = {
-        static_cast<uint8_t>(color.getRed()   * 255),
-        static_cast<uint8_t>(color.getGreen() * 255),
-        static_cast<uint8_t>(color.getBlue()  * 255),
-        static_cast<uint8_t>(color.getAlpha() * 255)
-    };
+    static constexpr char HEX[] = "0123456789ABCDEF";
 
-    os << '#' << std::hex << bytes[0] << bytes[1] << bytes[2] << bytes[3];
+    const int red   = color.getRed()   * 255;
+    const int green = color.getGreen() * 255;
+    const int blue  = color.getBlue()  * 255;
+    const int alpha = color.getAlpha() * 255;
+
+    os << '#';
+    os << HEX[(red   >> 4) & 0x0F] << HEX[red   & 0x0F];
+    os << HEX[(green >> 4) & 0x0F] << HEX[green & 0x0F];
+    os << HEX[(blue  >> 4) & 0x0F] << HEX[blue  & 0x0F];
+    os << HEX[(alpha >> 4) & 0x0F] << HEX[alpha & 0x0F];
 
     return os;
 }
