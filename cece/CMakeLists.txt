@@ -115,18 +115,19 @@ generate_export_header(${PROJECT_NAME}
 
 # ######################################################################### #
 
-target_link_libraries(${PROJECT_NAME} Box2D)
+# Link Box2D internally
+target_link_libraries(${PROJECT_NAME} PRIVATE Box2D)
 
 # Include OpenGL if rendering is enabled
 if (CECE_RENDER)
     # OpenGL library is required
     find_package(OpenGL REQUIRED)
     target_include_directories(${PROJECT_NAME} PUBLIC ${OPENGL_INCLUDE_DIR})
-    target_link_libraries(${PROJECT_NAME} ${OPENGL_LIBRARIES})
+    target_link_libraries(${PROJECT_NAME} PUBLIC ${OPENGL_LIBRARIES})
 endif ()
 
 if (UNIX AND NOT APPLE)
-    target_link_libraries(${PROJECT_NAME} dl)
+    target_link_libraries(${PROJECT_NAME} PUBLIC dl)
 endif ()
 
 # ######################################################################### #
