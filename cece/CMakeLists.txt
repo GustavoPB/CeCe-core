@@ -93,13 +93,6 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     WINDOWS_EXPORT_ALL_SYMBOLS On # TODO: necessary?
 )
 
-if (MINGW)
-    # MinGW bug
-    target_compile_definitions(${PROJECT_NAME}
-        PUBLIC -D__NO_INLINE__
-    )
-endif ()
-
 # Enable time measurement
 if (CECE_TIME_MEASUREMENT)
     target_compile_definitions(${PROJECT_NAME}
