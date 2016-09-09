@@ -40,6 +40,7 @@
 /* ************************************************************************ */
 
 namespace cece {
+    namespace loader    { class Loader; }
     namespace init      { class Initializer; }
     namespace module    { class Module; }
     //namespace object    { class Object; }
@@ -223,6 +224,18 @@ public:
      * @return Pointer to created program.
      */
     UniquePtr<program::Program> createProgram(StringView typeName) const;
+
+
+// Private Operations
+private:
+
+
+    /**
+     * @brief Create a loader.
+     *
+     * @return A loader.
+     */
+    UniquePtr<loader::Loader> createLoader(StringView name) const;
 
 
 // Private Data Members

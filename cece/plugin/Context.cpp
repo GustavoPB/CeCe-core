@@ -178,75 +178,34 @@ UniquePtr<simulator::Simulation> Context::createSimulation(const FilePath& filep
     // File extension
     auto ext = filepath.getExtension().substr(1);
 
-    // Foreach loaded APIs and find factory
-    for (auto plugin : m_plugins)
-    {
-        // Get factory manager
-        auto factoryManager = getRepository().getLoaderFactoryManager(plugin.second);
+    // Find loader by extension
+    auto loader = createLoader(ext);
+    CECE_ASSERT(loader);
 
-        // Exists factory
-        if (factoryManager && factoryManager->exists(ext))
-        {
-            // Find loader by extension
-            auto loader = factoryManager->createLoader(ext);
-            CECE_ASSERT(loader);
-
-            // Create a simulation
-            return loader->fromFile(getRepository(), filepath, parameters);
-        }
-    }
-
-    throw RuntimeException("Unable to load file with extension: '" + ext + "'");
+    // Create a simulation
+    return loader->fromFile(getRepository(), filepath, parameters);
 }
 
 /* ************************************************************************ */
 
 UniquePtr<simulator::Simulation> Context::createSimulation(StringView type, StringView source) const
 {
-    // Foreach loaded APIs and find factory
-    for (auto plugin : m_plugins)
-    {
-        // Get factory manager
-        auto factoryManager = getRepository().getLoaderFactoryManager(plugin.second);
+    auto loader = createLoader(type);
+    CECE_ASSERT(loader);
 
-        // Exists factory
-        if (factoryManager && factoryManager->exists(type))
-        {
-            // Find loader
-            auto loader = factoryManager->createLoader(type);
-            CECE_ASSERT(loader);
-
-            // Create a simulation
-            return loader->fromSource(getRepository(), String(source));
-        }
-    }
-
-    throw RuntimeException("Unable to find loader '" + String(type) + "'");
+    // Create a simulation
+    return loader->fromSource(getRepository(), String(source));
 }
 
 /* ************************************************************************ */
 
 UniquePtr<simulator::Simulation> Context::createSimulation(StringView type, StringView source, const FilePath& filepath) const
 {
-    // Foreach loaded APIs and find factory
-    for (auto plugin : m_plugins)
-    {
-        // Get factory manager
-        auto factoryManager = getRepository().getLoaderFactoryManager(plugin.second);
+    auto loader = createLoader(type);
+    CECE_ASSERT(loader);
 
-        // Exists factory
-        if (factoryManager && factoryManager->exists(type))
-        {
-            // Find loader
-            auto loader = factoryManager->createLoader(type);
-            CECE_ASSERT(loader);
-
-            // Create a simulation
-            return loader->fromSource(getRepository(), String(source), filepath);
-        }
-    }
-
-    throw RuntimeException("Unable to find loader: " + String(type));
+    // Create a simulation
+    return loader->fromSource(getRepository(), String(source), filepath);
 }
 
 /* ************************************************************************ */
@@ -419,6 +378,24 @@ UniquePtr<program::Program> Context::createProgram(StringView typeName) const
     throw RuntimeException(
         "Cannot create program: " + String(typeName) + ". Program found in plugin(s): " + join(names)
     );
+}
+
+/* ************************************************************************ */
+
+UniquePtr<loader::Loader> Context::createLoader(StringView name) const
+{
+    // Foreach repository records and find loader with given name
+    for (const auto& record : getRepository().getRecords())
+    {
+        // Get factory manager
+        const auto& factoryManager = record.second.getLoaderFactoryManager();
+
+        // Exists factory
+        if (factoryManager.exists(name))
+            return factoryManager.createLoader(name);
+    }
+
+    throw RuntimeException("Unable to find loader '" + String(name) + "'");
 }
 
 /* ************************************************************************ */
