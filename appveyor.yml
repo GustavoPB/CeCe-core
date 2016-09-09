@@ -53,7 +53,7 @@ branches:
 
 install:
     - SET PATH=%PATH:C:\Program Files\Git\usr\bin;=%
-    - SET PATH=C:\MinGW\bin;%PATH%
+    - SET PATH=C:\mingw-w64\i686-5.3.0-posix-dwarf-rt_v4-rev0\mingw32\bin;%PATH%
 
 before_build:
     - md build && pushd build && cmake -G "%GENERATOR%" -DCMAKE_BUILD_TYPE=Release -DCECE_TESTS_BUILD=On -DCECE_RENDER=%CECE_RENDER% .. & popd
