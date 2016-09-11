@@ -200,12 +200,12 @@ bool isDirectory(const FilePath& path) noexcept
 
 /* ************************************************************************ */
 
-bool fileExists(const FilePath& path) noexcept
+bool pathExists(const FilePath& path) noexcept
 {
 #ifdef _WIN32
     auto str = toWide(path.toString());
     DWORD dwAttrib = GetFileAttributesW(str.c_str());
-    return (dwAttrib != INVALID_FILE_ATTRIBUTES && !(dwAttrib & FILE_ATTRIBUTE_DIRECTORY));
+    return dwAttrib != INVALID_FILE_ATTRIBUTES;
 #else
     return access(path.c_str(), F_OK) != -1;
 #endif
@@ -237,7 +237,7 @@ FilePath tempDirectory()
             if (i >= 2)
                 p /= "Temp";
 
-            if (fileExists(p) && isDirectory(p))
+            if (pathExists(p) && isDirectory(p))
                 break;
 
             p.clear();

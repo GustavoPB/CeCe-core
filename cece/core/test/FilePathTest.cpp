@@ -101,7 +101,7 @@ TEST(FilePath, functions)
     // TODO: test
     // bool isFile(const FilePath& path) noexcept;
     // bool isDirectory(const FilePath& path) noexcept;
-    // bool fileExists(const FilePath& path) noexcept;
+    // bool pathExists(const FilePath& path) noexcept;
     // FilePath tempDirectory();
     // DynamicArray<FilePath> openDirectory(const FilePath& dir);
 }

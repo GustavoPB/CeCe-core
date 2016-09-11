@@ -395,7 +395,7 @@ bool isDirectory(const FilePath& path) noexcept;
  *
  * @return
  */
-bool fileExists(const FilePath& path) noexcept;
+bool pathExists(const FilePath& path) noexcept;
 
 /* ************************************************************************ */
 
