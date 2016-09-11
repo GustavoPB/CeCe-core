@@ -31,6 +31,7 @@
 #include <cstdarg>
 
 // CeCe
+#include "cece/export.hpp"
 #include "cece/core/String.hpp"
 #include "cece/core/StaticArray.hpp"
 #include "cece/core/Tuple.hpp"
@@ -320,7 +321,7 @@ private:
 private:
 
     /// Factory.
-    static ViewPtr<DataExportFactory> s_factory;
+    static CECE_EXPORT ViewPtr<DataExportFactory> s_factory;
 
 };
 
