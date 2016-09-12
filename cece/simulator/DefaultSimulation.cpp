@@ -33,6 +33,9 @@
 #include <iterator>
 #include <iomanip>
 
+// Box2D
+#include <Box2D/Box2D.h>
+
 // CeCe
 #include "cece/core/Assert.hpp"
 #include "cece/core/Real.hpp"
@@ -45,8 +48,13 @@
 #include "cece/plugin/Manager.hpp"
 #include "cece/init/Initializer.hpp"
 #include "cece/module/Module.hpp"
+#include "cece/object/ContactListener.hpp"
 #include "cece/simulator/TimeMeasurement.hpp"
 #include "cece/simulator/ConverterBox2D.hpp"
+
+#ifdef CECE_RENDER
+#  include "cece/render/PhysicsDebugger.hpp"
+#endif
 
 /* ************************************************************************ */
 
@@ -55,12 +63,55 @@ namespace simulator {
 
 /* ************************************************************************ */
 
+namespace {
+
+/* ************************************************************************ */
+
+#ifdef CECE_RENDER
+// TODO make as simulation local
+/// Physics debugger
+render::PhysicsDebugger g_physicsDebugger;
+#endif
+
+/* ************************************************************************ */
+
+}
+
+/* ************************************************************************ */
+
+struct DefaultSimulation::ContactListener : public b2ContactListener
+{
+    object::ContactListener* m_listener;
+
+    void BeginContact(b2Contact* contact) override
+    {
+        if (!m_listener)
+            return;
+
+        auto body1 = contact->GetFixtureA()->GetBody();
+        auto body2 = contact->GetFixtureB()->GetBody();
+        auto o1 = static_cast<object::Object*>(body1->GetUserData());
+        auto o2 = static_cast<object::Object*>(body2->GetUserData());
+
+        m_listener->onContact(*o1, *o2);
+    }
+};
+
+/* ************************************************************************ */
+
 DefaultSimulation::DefaultSimulation(const plugin::Repository& repository, FilePath path) noexcept
     : m_pluginContext(repository)
     , m_fileName(std::move(path))
     , m_world{makeUnique<b2World>(b2Vec2{0.0f, 0.0f})}
 {
-    // Nothing to do
+    g_physicsDebugger.SetFlags(
+        render::PhysicsDebugger::e_shapeBit |
+        render::PhysicsDebugger::e_centerOfMassBit |
+        render::PhysicsDebugger::e_jointBit
+    );
+
+    // Set physics debugger
+    m_world->SetDebugDraw(&g_physicsDebugger);
 }
 
 /* ************************************************************************ */
@@ -369,10 +420,32 @@ void DefaultSimulation::setPhysicsEngineTimeStep(units::Time dt) noexcept
 
 /* ************************************************************************ */
 
+void DefaultSimulation::setContactListener(object::ContactListener* listener)
+{
+    if (listener)
+    {
+        if (!m_contactListener)
+            m_contactListener = makeUnique<ContactListener>();
+
+        m_contactListener->m_listener = listener;
+        m_world->SetContactListener(m_contactListener.get());
+    }
+    else
+    {
+        m_world->SetContactListener(nullptr);
+    }
+}
+
+/* ************************************************************************ */
+
 void DefaultSimulation::loadConfig(const config::Configuration& config)
 {
     if (config.has("length-coefficient"))
+    {
+        // TODO make as simulation local
         ConverterBox2D::getInstance().setLengthCoefficient(config.get<RealType>("length-coefficient"));
+        g_physicsDebugger.setScale(1.0 / simulator::ConverterBox2D::getInstance().getLengthCoefficient());
+    }
 
     Simulation::loadConfig(config);
 

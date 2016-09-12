@@ -215,6 +215,13 @@ ViewPtr<program::Program> Simulation::createProgram(const config::Configuration&
 
 /* ************************************************************************ */
 
+void Simulation::setContactListener(object::ContactListener* listener)
+{
+    // Nothing to do
+}
+
+/* ************************************************************************ */
+
 void Simulation::loadConfig(const config::Configuration& config)
 {
     setWorldSize(config.get<units::SizeVector>("world-size"));

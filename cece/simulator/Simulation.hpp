@@ -55,6 +55,7 @@ namespace cece {
     namespace init { class Initializer; }
     namespace module { class Module; }
     //namespace object { class Object; }
+    namespace object { class ContactListener; }
     namespace object { class Type; }
     namespace program { class Program; }
 
@@ -710,6 +711,14 @@ public:
      * @param name Program name.
      */
     virtual void deleteProgram(StringView name) = 0;
+
+
+    /**
+     * @brief Register contact listener.
+     *
+     * @param listener New listener.
+     */
+    virtual void setContactListener(object::ContactListener* listener);
 
 
 // Public Operations

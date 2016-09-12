@@ -696,6 +696,14 @@ public:
     void setPhysicsEngineTimeStep(units::Time dt) noexcept;
 
 
+    /**
+     * @brief Register contact listener.
+     *
+     * @param listener New listener.
+     */
+    void setContactListener(object::ContactListener* listener) override;
+
+
 // Public Operations
 public:
 
@@ -820,6 +828,10 @@ private:
 
     /// Box2D world
     UniquePtr<b2World> m_world;
+
+    /// Contact listener wrapper
+    class ContactListener;
+    UniquePtr<ContactListener> m_contactListener;
 
     /// Simulation objects.
     object::Container m_objects;
