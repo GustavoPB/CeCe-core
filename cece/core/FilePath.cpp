@@ -231,17 +231,26 @@ FilePath tempDirectory()
         wchar_t* buffer;
         size_t size;
 
-        if (_wdupenv_s(&buffer, &size, envList[i]) == 0)
-        {
-            p = fromWide(buffer);
-            if (i >= 2)
-                p /= "Temp";
+#ifdef __MINGW32__
+        if (_wgetenv_s(&size, nullptr, 0, envList[i]) != 0)
+            continue;
 
-            if (pathExists(p) && isDirectory(p))
-                break;
+        DynamicArray<wchar_t> buf(size);
+        buffer = buf.data();
+        _wgetenv_s(&size, buffer, size, envList[i]);
+#else
+        if (_wdupenv_s(&buffer, &size, envList[i]) != 0)
+            continue;
+#endif
 
-            p.clear();
-        }
+        p = fromWide(buffer);
+        if (i >= 2)
+            p /= "Temp";
+
+        if (pathExists(p) && isDirectory(p))
+            break;
+
+        p.clear();
     }
 
     if (p.isEmpty())
