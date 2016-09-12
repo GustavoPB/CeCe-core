@@ -104,6 +104,7 @@ DefaultSimulation::DefaultSimulation(const plugin::Repository& repository, FileP
     , m_fileName(std::move(path))
     , m_world{makeUnique<b2World>(b2Vec2{0.0f, 0.0f})}
 {
+#ifdef CECE_RENDER
     g_physicsDebugger.SetFlags(
         render::PhysicsDebugger::e_shapeBit |
         render::PhysicsDebugger::e_centerOfMassBit |
@@ -112,6 +113,7 @@ DefaultSimulation::DefaultSimulation(const plugin::Repository& repository, FileP
 
     // Set physics debugger
     m_world->SetDebugDraw(&g_physicsDebugger);
+#endif
 }
 
 /* ************************************************************************ */
@@ -445,7 +447,9 @@ void DefaultSimulation::loadConfig(const config::Configuration& config)
     {
         // TODO make as simulation local
         ConverterBox2D::getInstance().setLengthCoefficient(config.get<RealType>("length-coefficient"));
+#ifdef CECE_RENDER
         g_physicsDebugger.setScale(1.0 / simulator::ConverterBox2D::getInstance().getLengthCoefficient());
+#endif
     }
 
     Simulation::loadConfig(config);
