@@ -116,7 +116,7 @@ generate_export_header(${PROJECT_NAME}
 # ######################################################################### #
 
 # Link Box2D internally
-target_link_libraries(${PROJECT_NAME} PUBLIC Box2D)
+target_link_libraries(${PROJECT_NAME} PRIVATE Box2D)
 
 # Include OpenGL if rendering is enabled
 if (CECE_RENDER)
