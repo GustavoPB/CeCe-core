@@ -38,6 +38,33 @@ inline namespace core {
 
 /* ************************************************************************ */
 
+namespace {
+
+/* ************************************************************************ */
+
+#if _WIN32
+/**
+ * Returns current terminal attributes.
+ * @param  term Terminal handle.
+ * @return Current attributes.
+ */
+WORD getCurrentAttributes(HANDLE term)
+{
+    CONSOLE_SCREEN_BUFFER_INFO info;
+
+    if (!GetConsoleScreenBufferInfo(term, &info))
+        return 0;
+
+    return info.wAttributes;
+}
+#endif
+
+/* ************************************************************************ */
+
+}
+
+/* ************************************************************************ */
+
 const CliColor CliColor::Default(CliColor::Code::FG_DEFAULT);
 const CliColor CliColor::Black(CliColor::Code::FG_BLACK);
 const CliColor CliColor::Red(CliColor::Code::FG_RED);
@@ -60,18 +87,16 @@ const CliColor CliColor::White(CliColor::Code::FG_WHITE);
 
 OutStream& operator<<(OutStream& os, const CliColor& color) noexcept
 {
-#if __unix__
-    // Color output on Unix based OS (Linux, OSX)
-    return os << "\033[" << static_cast<int>(color.getCode()) << "m";
-#elif _WIN32
+#if _WIN32
     static HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
     static HANDLE err = GetStdHandle(STD_ERROR_HANDLE);
+    static WORD defaultAttr = getCurrentAttributes(out);
     WORD attr = 0;
     switch (color.getCode())
     {
     default:
     case CliColor::Code::FG_WHITE:
-    case CliColor::Code::FG_DEFAULT:        attr = FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE; break;
+    case CliColor::Code::FG_DEFAULT:        attr = defaultAttr; break;
     case CliColor::Code::FG_BLACK:          attr = 0; break;
     case CliColor::Code::FG_RED:            attr = FOREGROUND_RED; break;
     case CliColor::Code::FG_GREEN:          attr = FOREGROUND_GREEN; break;
@@ -99,8 +124,8 @@ OutStream& operator<<(OutStream& os, const CliColor& color) noexcept
 
     return os;
 #else
-    // Ignore on others
-    return os;
+    // Color output on Unix based OS (Linux, OSX)
+    return os << "\033[" << static_cast<int>(color.getCode()) << "m";
 #endif
 }
 
