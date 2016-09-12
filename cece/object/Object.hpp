@@ -27,16 +27,15 @@
 
 /* ************************************************************************ */
 
-// CeCe config
-#include "cece/config.hpp"
-
-/* ************************************************************************ */
-
 // C++
 #include <functional>
 
 // CeCe
+#include "cece/config.hpp"
 #include "cece/core/Assert.hpp"
+#include "cece/core/SharedPtr.hpp"
+#include "cece/core/ViewPtr.hpp"
+#include "cece/core/UniquePtr.hpp"
 #include "cece/core/Units.hpp"
 #include "cece/core/VectorUnits.hpp"
 #include "cece/core/DynamicArray.hpp"
@@ -48,6 +47,7 @@
 #include "cece/core/Exception.hpp"
 #include "cece/program/Program.hpp"
 #include "cece/program/Container.hpp"
+#include "cece/object/BoundData.hpp"
 
 #ifdef CECE_RENDER
 #  include "cece/render/Color.hpp"
@@ -60,9 +60,11 @@ class b2Body;
 class b2Shape;
 class b2Joint;
 
-namespace cece { namespace config { class Configuration; } }
-namespace cece { namespace simulator { class Simulation; } }
-namespace cece { namespace simulator { class Visualization; } }
+namespace cece {
+    namespace config    { class Configuration; }
+    namespace simulator { class Simulation; }
+    namespace simulator { class Visualization; }
+}
 
 /* ************************************************************************ */
 
@@ -94,6 +96,26 @@ public:
 
         /// Dynamic body pinned to initial position.
         Pinned
+    };
+
+
+// Public Structures
+public:
+
+
+    /**
+     * @brief Bound data.
+     */
+    struct Bound
+    {
+        /// The other object.
+        ViewPtr<Object> object;
+
+        /// Physical engine joint.
+        ViewPtr<b2Joint> joint;
+
+        /// Bound data
+        SharedPtr<BoundData> data;
     };
 
 
@@ -352,6 +374,25 @@ public:
      * @return
      */
     units::Length getMaxTranslation() const noexcept;
+
+
+    /**
+     * @brief Returns bounds created with current object.
+     *
+     * @return
+     */
+    const DynamicArray<Bound>& getBounds() const noexcept
+    {
+        return m_bounds;
+    }
+
+
+    /**
+     * @brief Returns bounds created with current object.
+     *
+     * @return
+     */
+    DynamicArray<ViewPtr<Object>> getBoundObjects() const noexcept;
 
 
 // Public Mutators
@@ -630,6 +671,22 @@ public:
 
 
     /**
+     * Create bound with other object.
+     *
+     * @param other The other object.
+     * @param data  Optional bind data.
+     */
+    void createBound(Object& other, UniquePtr<BoundData> data = {});
+
+
+    /**
+     * Remove bound with other object.
+     * @param other The other object.
+     */
+    void removeBound(const Object& other);
+
+
+    /**
      * @brief Update object state.
      *
      * @param dt Simulation time step.
@@ -743,6 +800,9 @@ private:
 
     /// Joint for pinned body.
     b2Joint* m_pinJoint = nullptr;
+
+    /// Bounds
+    DynamicArray<Bound> m_bounds;
 
     /// Body shapes.
     DynamicArray<UniquePtr<b2Shape>> m_bodyShapes;

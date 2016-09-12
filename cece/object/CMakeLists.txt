@@ -36,6 +36,8 @@ set(SRCS
     FactoryManager.cpp
     Container.hpp
     Container.cpp
+    BoundData.hpp
+    BoundData.cpp
     ContactListener.hpp
     ContactListener.cpp
 )

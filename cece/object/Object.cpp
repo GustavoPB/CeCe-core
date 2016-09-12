@@ -229,6 +229,18 @@ units::Length Object::getMaxTranslation() const noexcept
 
 /* ************************************************************************ */
 
+DynamicArray<ViewPtr<Object>> Object::getBoundObjects() const noexcept
+{
+    DynamicArray<ViewPtr<Object>> bounds;
+
+    for (const auto& bound : m_bounds)
+        bounds.emplace_back(bound.object);
+
+    return bounds;
+}
+
+/* ************************************************************************ */
+
 void Object::setType(Type type) noexcept
 {
     m_type = type;
@@ -330,6 +342,53 @@ void Object::useProgram(StringView name) noexcept
 void Object::destroy()
 {
     getSimulation().deleteObject(this);
+}
+
+/* ************************************************************************ */
+
+void Object::createBound(Object& other, UniquePtr<BoundData> data)
+{
+    auto& world = getSimulation().getWorld();
+    SharedPtr<BoundData> d = std::move(data);
+
+    b2WeldJointDef jointDef;
+    jointDef.Initialize(m_body, other.m_body, m_body->GetWorldCenter());
+    jointDef.userData = d.get();
+    b2Joint* joint = world.CreateJoint(&jointDef);
+
+    m_bounds.push_back(Bound{&other, joint, d});
+    other.m_bounds.push_back({this, joint, d});
+}
+
+/* ************************************************************************ */
+
+void Object::removeBound(const Object& other)
+{
+    auto& world = getSimulation().getWorld();
+
+    // Find bound
+    for (auto it = m_bounds.begin(); it != m_bounds.end(); ++it)
+    {
+        if (it->object != &other)
+            continue;
+
+        // Remove from other object
+        for (auto it2 = it->object->m_bounds.begin(); it2 != it->object->m_bounds.end(); ++it2)
+        {
+            if (it2->object == this)
+            {
+                it->object->m_bounds.erase(it2);
+                break;
+            }
+        }
+
+        // Delete joint
+        world.DestroyJoint(it->joint);
+
+        // Remove bound
+        m_bounds.erase(it);
+        break;
+    }
 }
 
 /* ************************************************************************ */
