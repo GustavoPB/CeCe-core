@@ -152,13 +152,24 @@ public:
 
 
     /**
-     * @brief Return object type name.
+     * @brief Return object type name (can be user defined).
      *
      * @return
      */
     StringView getTypeName() const noexcept
     {
         return m_typeName;
+    }
+
+
+    /**
+     * @brief Return object real type name.
+     *
+     * @return
+     */
+    StringView getRealTypeName() const noexcept
+    {
+        return m_realTypeName;
     }
 
 
@@ -397,6 +408,17 @@ public:
 
 // Public Mutators
 public:
+
+
+    /**
+     * @brief Change object type name (can be user defined).
+     *
+     * @param typeName New type name.
+     */
+    void setTypeName(String typeName) noexcept
+    {
+        m_typeName = std::move(typeName);
+    }
 
 
     /**
@@ -763,6 +785,9 @@ private:
 
     /// Owning simulation.
     simulator::Simulation& m_simulation;
+
+    /// Object real type name.
+    String m_realTypeName;
 
     /// Object type name.
     String m_typeName;

@@ -366,6 +366,7 @@ ViewPtr<object::Object> DefaultSimulation::createObject(StringView type, object:
 
         // Create base object
         auto object = createObject(objType->baseName);
+        object->setTypeName(String(type));
         object->configure(objType->config, *this);
 
         return object;

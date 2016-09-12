@@ -109,7 +109,8 @@ Object::IdType s_id = 0;
 
 Object::Object(simulator::Simulation& simulation, String typeName, Type type) noexcept
     : m_simulation(simulation)
-    , m_typeName(std::move(typeName))
+    , m_realTypeName(typeName)
+    , m_typeName(typeName)
     , m_id(++s_id)
     , m_type(type)
 {
