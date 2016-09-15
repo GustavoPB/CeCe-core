@@ -168,6 +168,9 @@ Value parse(StringView str)
 #undef SYMBOL_TEST
 #undef SYMBOL_TEST2
 
+    // Special type
+    if (symbol == "/s") return (value / units::s(1)).value();
+
     // Fallback
 
     int exponent = 0;
