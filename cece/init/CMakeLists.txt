@@ -26,6 +26,7 @@
 # Sources
 set(SRCS
     Initializer.hpp
+    Initializer.cpp
     Container.hpp
     Container.cpp
     Factory.hpp

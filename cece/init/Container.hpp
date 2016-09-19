@@ -57,7 +57,7 @@ public:
      *
      * @param simulation Simulation object.
      */
-    void init(simulator::Simulation& simulation);
+    void init(simulator::Simulation& simulation) const;
 
 };
 

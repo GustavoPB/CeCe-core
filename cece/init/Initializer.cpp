@@ -23,12 +23,8 @@
 /*                                                                          */
 /* ************************************************************************ */
 
-#pragma once
-
-/* ************************************************************************ */
-
-namespace cece { namespace simulator { class Simulation; } }
-namespace cece { namespace config { class Configuration; } }
+// Declaration
+#include "cece/init/Initializer.hpp"
 
 /* ************************************************************************ */
 
@@ -37,57 +33,21 @@ namespace init {
 
 /* ************************************************************************ */
 
-/**
- * @brief Simulation initialization program.
- *
- * Initializer is invoked before simulation start and it just modify simulation
- * in a way the static description can't (e.g. create a dynamic number of objects).
- * It also doesn't make sense to store any data within initializer because it's
- * invoked only once.
- */
-class Initializer
+Initializer::~Initializer() = default;
+
+/* ************************************************************************ */
+
+void Initializer::loadConfig(simulator::Simulation& simulation, const config::Configuration& config)
 {
+    // Nothing to do
+}
 
-// Public Ctors & Dtors
-public:
+/* ************************************************************************ */
 
-
-    /**
-     * @brief Destructor.
-     */
-    virtual ~Initializer() = 0;
-
-
-// Public Operations
-public:
-
-
-    /**
-     * @brief Load initializer configuration.
-     *
-     * @param simulation Current simulation.
-     * @param config     Source configuration.
-     */
-    virtual void loadConfig(simulator::Simulation& simulation, const config::Configuration& config);
-
-
-    /**
-     * @brief Store initializer configuration.
-     *
-     * @param simulation Current simulation.
-     * @param config     Output configuration.
-     */
-    virtual void storeConfig(const simulator::Simulation& simulation, config::Configuration& config) const;
-
-
-    /**
-     * @brief Invoke initializer.
-     *
-     * @param simulation Simulation.
-     */
-    virtual void init(simulator::Simulation& simulation) const = 0;
-
-};
+void Initializer::storeConfig(const simulator::Simulation& simulation, config::Configuration& config) const
+{
+    // Nothing to do
+}
 
 /* ************************************************************************ */
 

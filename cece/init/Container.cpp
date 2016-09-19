@@ -36,9 +36,9 @@ namespace init {
 
 /* ************************************************************************ */
 
-void Container::init(simulator::Simulation& simulation)
+void Container::init(simulator::Simulation& simulation) const
 {
-    invoke(&Initializer::call, simulation);
+    invoke(&Initializer::init, simulation);
 }
 
 /* ************************************************************************ */
