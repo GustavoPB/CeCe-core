@@ -707,6 +707,11 @@ public:
      */
     void removeBound(const Object& other);
 
+    /**
+	 * Remove bound with other object.
+	 * @param other The other object.
+	 */
+    void removeAllBounds();
 
     /**
      * @brief Update object state.
