@@ -358,7 +358,7 @@ void Object::createBound(Object& other, UniquePtr<BoundData> data)
     b2Joint* joint = world.CreateJoint(&jointDef);
 
     m_bounds.push_back(Bound{&other, joint, d});
-    other.m_bounds.push_back({this, joint, d});
+    //other.m_bounds.push_back({this, joint, d});
 }
 
 /* ************************************************************************ */
